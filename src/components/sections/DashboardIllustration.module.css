@@ -1,0 +1,78 @@
+.wrap {
+  width: 100%;
+}
+
+.wrap svg {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  filter: drop-shadow(0 8px 40px rgba(0, 0, 0, 0.08));
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2.5px); }
+}
+
+@keyframes barGrow {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+
+@keyframes dashScroll {
+  to { stroke-dashoffset: -12; }
+}
+
+@keyframes fadeLoop {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes ringPulse {
+  0%, 100% { r: 18; opacity: 0.15; }
+  50% { r: 21; opacity: 0.3; }
+}
+
+.pulse1 { animation: pulse 3s ease-in-out infinite; }
+.pulse2 { animation: pulse 3s ease-in-out infinite 0.8s; }
+.pulse3 { animation: pulse 3s ease-in-out infinite 1.6s; }
+
+.drift1 { animation: drift 5s ease-in-out infinite; }
+.drift2 { animation: drift 5s ease-in-out infinite 1.2s; }
+.drift3 { animation: drift 5s ease-in-out infinite 2.4s; }
+
+.dashFlow { animation: dashScroll 1.8s linear infinite; }
+.fadeLoop { animation: fadeLoop 4s ease-in-out infinite; }
+.cursorBlink { animation: cursorBlink 1.1s step-end infinite; }
+.ringPulse { animation: ringPulse 3s ease-in-out infinite; }
+
+.barGrow {
+  transform-origin: bottom;
+  animation: barGrow 1s ease-out forwards;
+}
+
+.bar1 { animation-delay: 0.15s; transform: scaleY(0); }
+.bar2 { animation-delay: 0.25s; transform: scaleY(0); }
+.bar3 { animation-delay: 0.35s; transform: scaleY(0); }
+.bar4 { animation-delay: 0.45s; transform: scaleY(0); }
+.bar5 { animation-delay: 0.55s; transform: scaleY(0); }
+.glassPanel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.glassCard {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  filter: drop-shadow(0 16px 40px rgba(0,0,0,0.5));
+}
