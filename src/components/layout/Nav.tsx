@@ -8,8 +8,9 @@ import styles from "./Nav.module.css";
 
 const navLinks = [
   { href: "/services", label: "Services" },
-  { href: "/#how-it-works", label: "How it works" },
   { href: "/pricing", label: "Prices" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
 ];
 
 export default function Nav() {

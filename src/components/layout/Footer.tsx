@@ -11,13 +11,15 @@ const serviceLinks = [
 ];
 
 const companyLinks = [
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 const socialLinks = [
   { href: "https://www.instagram.com/zenetera.itc/", label: "Instagram" },
-  { href: "#", label: "WhatsApp" },
+  { href: "https://wa.me/447477911934", label: "WhatsApp" },
 ];
 
 export default function Footer() {
