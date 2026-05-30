@@ -1,10 +1,10 @@
 import { MetadataRoute } from "next";
 import { caseStudies } from "@/content/work";
-import { blogs } from "@/content/blogs";
+import { getAllSlugs } from "@/sanity/queries";
 
 const BASE_URL = "https://zenetera.co.uk";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
     { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
@@ -22,8 +22,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const blogRoutes: MetadataRoute.Sitemap = blogs.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
+  const blogSlugs = await getAllSlugs();
+  const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+    url: `${BASE_URL}/blog/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.7,

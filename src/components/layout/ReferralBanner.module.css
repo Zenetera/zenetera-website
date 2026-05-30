@@ -1,0 +1,40 @@
+/* ── Referral Banner — thin announcement bar ─────────── */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-dark);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: center;
+  transition: background var(--transition-fast);
+}
+
+.banner:hover {
+  background: #161616;
+}
+
+.highlight {
+  color: var(--color-accent-light);
+  font-weight: 700;
+}
+
+.arrow {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.banner:hover .arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 480px) {
+  .banner {
+    font-size: var(--text-xs);
+  }
+}

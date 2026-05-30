@@ -1,7 +1,9 @@
 import { buildMetadata } from "@/lib/metadata";
 import BlogIndex from "@/components/sections/BlogIndex";
 import FinalCTA from "@/components/sections/FinalCTA";
-import { blogs } from "@/content/blogs";
+import { getAllPosts } from "@/sanity/queries";
+
+export const revalidate = 60;
 
 export const metadata = buildMetadata({
   title: "Blog",
@@ -10,10 +12,11 @@ export const metadata = buildMetadata({
   path: "/blog",
 });
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getAllPosts();
   return (
     <>
-      <BlogIndex posts={blogs} />
+      <BlogIndex posts={posts} />
       <FinalCTA />
     </>
   );

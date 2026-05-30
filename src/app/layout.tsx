@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import ReferralBanner from "@/components/layout/ReferralBanner";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-TVT5MV6M2T";
@@ -58,6 +59,7 @@ export default function RootLayout({
             gtag('config', '${GA_MEASUREMENT_ID}');
           `}
         </Script>
+        <ReferralBanner />
         <Nav />
         <main>{children}</main>
         <Footer />

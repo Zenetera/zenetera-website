@@ -2,18 +2,21 @@ import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/metadata";
 import BlogPostView from "@/components/sections/BlogPost";
 import FinalCTA from "@/components/sections/FinalCTA";
-import { blogs, getBlogBySlug } from "@/content/blogs";
+import { getAllPosts, getAllSlugs, getPostBySlug } from "@/sanity/queries";
+
+export const revalidate = 60;
 
 interface Props {
   params: { slug: string };
 }
 
-export function generateStaticParams() {
-  return blogs.map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: Props) {
-  const post = getBlogBySlug(params.slug);
+export async function generateMetadata({ params }: Props) {
+  const post = await getPostBySlug(params.slug);
   if (!post) return {};
 
   return buildMetadata({
@@ -23,13 +26,12 @@ export function generateMetadata({ params }: Props) {
   });
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getBlogBySlug(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const post = await getPostBySlug(params.slug);
   if (!post) notFound();
 
-  const related = blogs
-    .filter((p) => p.slug !== post.slug)
-    .slice(0, 2);
+  const all = await getAllPosts();
+  const related = all.filter((p) => p.slug !== post.slug).slice(0, 2);
 
   return (
     <>
