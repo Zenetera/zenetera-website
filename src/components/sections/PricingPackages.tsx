@@ -7,7 +7,7 @@ const packages = [
   {
     label: "Starter",
     title: "Starter Website",
-    price: "£250",
+    price: "$250",
     pricePrefix: "From",
     description:
       "Landing pages. Personal brands. Start-ups looking for a clean online presence.",
@@ -22,7 +22,7 @@ const packages = [
   {
     label: "Business",
     title: "Business Website",
-    price: "£700",
+    price: "$700",
     pricePrefix: "From",
     description:
       "Small & growing businesses that need constant updates and room to scale.",
@@ -37,7 +37,7 @@ const packages = [
   {
     label: "E-commerce",
     title: "Online Store",
-    price: "£800",
+    price: "$800",
     pricePrefix: "From",
     description:
       "Selling products online with secure payments and mobile-optimised checkout.",
@@ -52,7 +52,7 @@ const packages = [
   {
     label: "Advanced",
     title: "Custom Web App",
-    price: "£1,200",
+    price: "$1,200",
     pricePrefix: "From",
     description:
       "SaaS. Dashboards. Internal tools. Built with custom backend systems.",

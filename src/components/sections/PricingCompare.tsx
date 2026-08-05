@@ -5,10 +5,10 @@ import styles from "./PricingCompare.module.css";
 
 /* ── Data ──────────────────────────────────────────── */
 const tiers = [
-  { name: "Starter", price: "£250", note: "One-time build", cta: "Start building" },
-  { name: "Business", price: "£700", note: "One-time build", cta: "Grow here" },
-  { name: "E-commerce", price: "£800", note: "One-time build", cta: "Start selling" },
-  { name: "Web App", price: "£1,200", note: "Custom build", cta: "Consult" },
+  { name: "Starter", price: "$250", note: "One-time build", cta: "Start building" },
+  { name: "Business", price: "$700", note: "One-time build", cta: "Grow here" },
+  { name: "E-commerce", price: "$800", note: "One-time build", cta: "Start selling" },
+  { name: "Web App", price: "$1,200", note: "Custom build", cta: "Consult" },
 ];
 
 type CellValue = true | false | string;

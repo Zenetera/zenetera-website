@@ -4,7 +4,7 @@ import styles from "./PricingCare.module.css";
 
 /* ── Required Care Data ────────────────────────────── */
 const careTiers = ["Starter", "Business", "E-commerce", "Web App"];
-const carePrices = ["£30/mo", "£60/mo", "£80/mo", "From £120/mo"];
+const carePrices = ["$30/mo", "$60/mo", "$80/mo", "From $120/mo"];
 
 type CellValue = true | string;
 
@@ -33,7 +33,7 @@ const careRows: CareRow[] = [
 const upgrades = [
   {
     label: "Essential",
-    price: "£30",
+    price: "$30",
     note: "/month",
     title: "Essential care plan",
     description:
@@ -41,7 +41,7 @@ const upgrades = [
   },
   {
     label: "Growth",
-    price: "£75",
+    price: "$75",
     note: "/month",
     title: "Growth plan",
     description:
@@ -49,7 +49,7 @@ const upgrades = [
   },
   {
     label: "Pro",
-    price: "£150",
+    price: "$150",
     note: "/month",
     title: "Pro care plan",
     description:
