@@ -4,16 +4,15 @@ import Link from "next/link";
 import styles from "./Footer.module.css";
 
 const serviceLinks = [
-  { href: "/services#websites", label: "Website development" },
-  { href: "/services#automation", label: "Booking automation" },
-  { href: "/services#chatbots", label: "Chatbots" },
-  { href: "/services#google", label: "Google optimization" },
+  { href: "/villas", label: "Villas & Short Lets" },
+  { href: "/beauty", label: "Beauty & Wellness" },
+  { href: "/professional-services", label: "Professional Services" },
 ];
 
 const companyLinks = [
   { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "/products", label: "Products" },
   { href: "/#contact", label: "Contact" },
 ];
 

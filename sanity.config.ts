@@ -7,7 +7,7 @@ import { schemaTypes } from "./src/sanity/schemas";
 
 export default defineConfig({
   name: "default",
-  title: "Zenetera Studio",
+  title: "ZENETERA Studio",
   basePath: "/studio",
   projectId,
   dataset,

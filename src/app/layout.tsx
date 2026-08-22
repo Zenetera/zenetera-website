@@ -24,8 +24,8 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: {
-    default: "Zenetera | Grow Your Business Online",
-    template: "%s | Zenetera",
+    default: "ZENETERA | Grow Your Business Online",
+    template: "%s | ZENETERA",
   },
   description:
     "We help small businesses, freelancers, and entrepreneurs get more customers through websites, automation, and smarter online presence.",

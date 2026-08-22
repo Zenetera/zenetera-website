@@ -34,7 +34,7 @@ export default function AboutStory() {
             transition={{ duration: 0.6 }}
           >
             <p>
-              Zenetera started because the UK small-business market was being quietly underserved.
+              ZENETERA started because the UK small-business market was being quietly underserved.
               They were told they needed websites, automations and AI but priced out of the
               agencies that could actually build them properly.
             </p>

@@ -17,7 +17,7 @@ export default function AboutHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          About Zenetera
+          About ZENETERA
         </motion.span>
 
         <motion.h1
@@ -37,7 +37,7 @@ export default function AboutHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
         >
-          Zenetera is a UK Web Services Agency working with small businesses and
+          ZENETERA is a UK Web Services Agency working with small businesses and
           professional services to design, develop, deploy and automate the online
           presence that turns visitors into customers without the agency
           markup or endless retainer fees.

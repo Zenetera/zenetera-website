@@ -8,7 +8,7 @@ import styles from "./Nav.module.css";
 
 const navLinks = [
   { href: "/services", label: "Services" },
-  { href: "/pricing", label: "Prices" },
+  { href: "/products", label: "Products" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
 ];
@@ -35,8 +35,8 @@ export default function Nav() {
     <header className={headerClass}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
-          <Image src="/images/logo.png" alt="Zenetera Logo" width={36} height={36} />
-          <Image src="/images/logo-name.png" alt="Zenetera" width={200} height={40} className={styles.logoName}/>
+          <Image src="/images/logo.png" alt="ZENETERA Logo" width={36} height={36} />
+          <Image src="/images/logo-name.png" alt="ZENETERA" width={200} height={40} className={styles.logoName}/>
         </Link>
 
         <ul className={styles.links}>

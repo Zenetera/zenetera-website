@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 const BASE_URL = "https://zenetera.co.uk";
-const SITE_NAME = "Zenetera ITC";
+const SITE_NAME = "ZENETERA ITC";
 
 interface BuildMetadataArgs {
   title: string;

@@ -8,7 +8,7 @@ import FinalCTA from "@/components/sections/FinalCTA";
 export const metadata = buildMetadata({
   title: "About",
   description:
-    "Zenetera is a UK studio helping small businesses, tradesmen, and professional services launch websites, automation, and AI that turn visitors into customers.",
+    "ZENETERA is a UK studio helping small businesses, tradesmen, and professional services launch websites, automation, and AI that turn visitors into customers.",
   path: "/about",
 });
 

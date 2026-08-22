@@ -205,8 +205,8 @@ export default function ServicesDetail() {
             Let&apos;s talk about which services are right for your business.
             No pressure, no jargon, just a conversation.
           </p>
-          <Link href="/pricing" className={styles.ctaButton}>
-            See Pricing →
+          <Link href="/products" className={styles.ctaButton}>
+            See Products →
           </Link>
         </motion.div>
       </section>

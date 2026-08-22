@@ -8,7 +8,7 @@ export const revalidate = 60;
 export const metadata = buildMetadata({
   title: "Blog",
   description:
-    "Playbooks, field notes and honest takes on websites, automation, SEO and AI for UK small businesses, from the Zenetera studio.",
+    "Playbooks, field notes and honest takes on websites, automation, SEO and AI for UK small businesses, from the ZENETERA studio.",
   path: "/blog",
 });
 

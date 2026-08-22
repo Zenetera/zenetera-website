@@ -191,3 +191,71 @@
     flex-wrap: wrap;
   }
 }
+
+/* ── Answer deep link ─────────────────────────────── */
+.answerWrapper .answer:not(:last-child) {
+  padding-bottom: var(--space-3);
+}
+
+.answerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 var(--space-6) var(--space-6);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  transition: gap var(--transition-fast);
+}
+
+.answerLink:hover {
+  gap: var(--space-3);
+}
+
+/* ── Expanded variant (/faq) ──────────────────────── */
+.group {
+  scroll-margin-top: var(--space-24);
+}
+
+.group + .group {
+  margin-top: var(--space-12);
+}
+
+.groupTitle {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.itemStatic {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  transition: border-color var(--transition);
+}
+
+.itemStatic:hover {
+  border-color: var(--color-accent-light);
+}
+
+.questionStatic {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.4;
+  margin-bottom: var(--space-3);
+}
+
+.answerStatic {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.itemStatic .answerLink {
+  margin: var(--space-4) 0 0;
+}

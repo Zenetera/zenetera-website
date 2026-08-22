@@ -52,7 +52,7 @@ export default function BlogIndex({ posts }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className={styles.eyebrow}>The Zenetera blog</span>
+          <span className={styles.eyebrow}>The ZENETERA blog</span>
           <h1 className={styles.heading}>
             Playbooks for small businesses growing online.
           </h1>
