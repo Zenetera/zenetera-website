@@ -5,7 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ["/studio", "/studio/"],
     },
-    sitemap: "https://zenetera.co.uk/sitemap.xml",
+    sitemap: "https://www.zenetera.com/sitemap.xml",
   };
 }

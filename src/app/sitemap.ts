@@ -3,7 +3,7 @@ import { caseStudies } from "@/content/work";
 import { NICHES } from "@/lib/niches";
 import { getAllSlugs } from "@/sanity/queries";
 
-const BASE_URL = "https://zenetera.co.uk";
+const BASE_URL = "https://www.zenetera.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [

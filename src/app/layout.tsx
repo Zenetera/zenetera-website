@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   description:
     "We help small businesses, freelancers, and entrepreneurs get more customers through websites, automation, and smarter online presence.",
-  metadataBase: new URL("https://zenetera.co.uk"),
+  metadataBase: new URL("https://www.zenetera.com"),
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },
