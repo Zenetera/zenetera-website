@@ -25,7 +25,7 @@ const socialLinks = [
 function LinkColumn({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
     <div className={styles.column}>
-      <h4 className={styles.columnTitle}>{title}</h4>
+      <h3 className={styles.columnTitle}>{title}</h3>
       <ul className={styles.list}>
         {links.map(({ href, label }) => (
           <li key={label}>
@@ -50,7 +50,7 @@ export default function Footer() {
           <LinkColumn title="Social" links={socialLinks} />
 
           <div className={styles.column}>
-            <h4 className={styles.columnTitle}>Newsletter</h4>
+            <h3 className={styles.columnTitle}>Newsletter</h3>
             <p className={styles.newsletterText}>Get tips on growing your business online.</p>
             <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
               <input

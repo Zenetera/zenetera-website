@@ -35,9 +35,9 @@ const anchorFor = (category: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-function AnswerLink({ link }: { link: FaqLink }) {
+function AnswerLink({ link, tabIndex }: { link: FaqLink; tabIndex?: number }) {
   return (
-    <Link href={link.href} className={styles.answerLink}>
+    <Link href={link.href} className={styles.answerLink} tabIndex={tabIndex}>
       {link.label}
       <Arrow size={14} />
     </Link>
@@ -161,17 +161,20 @@ export default function FAQ({
                     aria-expanded={open}
                     aria-controls={id}
                   >
-                    <span className={styles.question}>{faq.question}</span>
+                    <span id={`${id}-q`} className={styles.question}>
+                      {faq.question}
+                    </span>
                     <span className={cx(styles.pip, open && styles.pipOpen)} aria-hidden="true">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       </svg>
                     </span>
                   </button>
-                  <div id={id} role="region" className={styles.answerWrap} aria-hidden={!open}>
+                  {/* Collapsed answers are visibility:hidden, so they leave the tab order and the accessibility tree. */}
+                  <div id={id} role="region" aria-labelledby={`${id}-q`} className={styles.answerWrap}>
                     <div className={styles.answerInner}>
                       <p className={styles.answer}>{faq.answer}</p>
-                      {faq.link && <AnswerLink link={faq.link} />}
+                      {faq.link && <AnswerLink link={faq.link} tabIndex={open ? 0 : -1} />}
                     </div>
                   </div>
                 </div>
