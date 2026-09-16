@@ -1,0 +1,27 @@
+.text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-manifesto);
+  line-height: 1.16;
+  letter-spacing: -0.024em;
+  max-width: 24ch;
+  color: var(--fg);
+  text-transform: none;
+}
+
+.word {
+  opacity: 0.22;
+  transition: opacity 0.4s ease;
+}
+
+.on {
+  opacity: 1;
+}
+
+.accent.on {
+  color: var(--color-accent);
+}
+
+[data-theme="dark"] .accent.on {
+  color: var(--color-accent-light);
+}
