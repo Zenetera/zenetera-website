@@ -2,11 +2,14 @@
   position: relative;
   padding: clamp(48px, 8vh, 96px) 0 clamp(56px, 9vh, 112px);
   background: var(--color-bg-hero);
-  overflow: hidden;
 }
 
+/* Dark heroes tuck under the sticky nav so the nav inverts over them from
+   the first pixel instead of sitting on a light strip. */
 .dark {
   background: var(--color-bg-dark);
+  margin-top: calc(-1 * var(--nav-h));
+  padding-top: calc(var(--nav-h) + clamp(48px, 8vh, 96px));
 }
 
 .kicker {

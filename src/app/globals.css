@@ -96,6 +96,7 @@
   --space-32: 8rem;
 
   /* Rhythm */
+  --nav-h: 68px;
   --pad: clamp(20px, 4.5vw, 64px);
   --section: clamp(96px, 13vh, 168px);
   --section-sm: clamp(64px, 9vh, 112px);

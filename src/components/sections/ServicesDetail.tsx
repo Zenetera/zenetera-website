@@ -1,7 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
-import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   WebDevIllustration,
   ECommerceIllustration,
@@ -11,14 +8,20 @@ import {
   AIAutomationIllustration,
   SEOIllustration,
 } from "@/components/illustrations/ServiceDetailIllustrations";
-import styles from "./ServicesDetail.module.css";
+import CtaBlock from "./CtaBlock";
+import PageHero from "./PageHero";
+import SplitFeature, { type SplitTone } from "./SplitFeature";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
+interface ServiceEntry {
+  id: string;
+  label: string;
+  title: string;
+  description: string;
+  features: string[];
+  illustration: ReactNode;
+}
 
-const services = [
+const services: ServiceEntry[] = [
   {
     id: "web-development",
     label: "Web Development",
@@ -126,90 +129,40 @@ const services = [
   },
 ];
 
+const tones: SplitTone[] = ["light", "alt", "dark"];
+
 export default function ServicesDetail() {
   return (
     <>
-      {/* Hero */}
-      <section className={styles.hero}>
-        <motion.div
-          className={styles.heroContainer}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className={styles.heroLabel}>Our Services</span>
-          <h1 className={styles.heroHeading}>
-            Everything you need to <span className={styles.gradientText}>grow</span>
-          </h1>
-          <p className={styles.heroSubtitle}>
-            From websites to AI automation, we build the systems that help your
-            business get more customers and run more smoothly.
-          </p>
-        </motion.div>
-      </section>
+      <PageHero
+        dark
+        eyebrow="Our Services"
+        heading="Everything you need to grow"
+        flair="grow"
+        sub="From websites to AI automation, we build the systems that help your business get more customers and run more smoothly."
+      />
 
-      {/* Service Sections */}
-      {services.map((service, index) => {
-        const bgClasses = [styles.sectionLight, styles.sectionAlt, styles.sectionDark];
-        const sectionClass = bgClasses[index % 3];
+      {services.map((service, index) => (
+        <SplitFeature
+          key={service.id}
+          id={service.id}
+          index={String(index + 1).padStart(2, "0")}
+          label={service.label}
+          title={service.title}
+          body={service.description}
+          bullets={service.features}
+          illustration={service.illustration}
+          reversed={index % 2 !== 0}
+          tone={tones[index % tones.length]}
+        />
+      ))}
 
-        return (
-          <section
-            key={service.id}
-            id={service.id}
-            className={sectionClass}
-          >
-          <motion.div
-            className={`${styles.serviceContainer} ${index % 2 !== 0 ? styles.reversed : ""}`}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={{
-              visible: { transition: { staggerChildren: 0.2 } },
-            }}
-          >
-            <motion.div className={styles.illustrationWrap} variants={fadeIn}>
-              {service.illustration}
-            </motion.div>
-
-            <motion.div className={styles.content} variants={fadeIn}>
-              <span className={styles.serviceLabel}>{service.label}</span>
-              <h2 className={styles.serviceTitle}>{service.title}</h2>
-              <p className={styles.serviceDescription}>
-                {service.description}
-              </p>
-              <ul className={styles.featureList}>
-                {service.features.map((feature) => (
-                  <li key={feature} className={styles.featureItem}>
-                    <span className={styles.featureIcon}>✓</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </motion.div>
-        </section>
-        );
-      })}
-      {/* Bottom CTA */}
-      <section className={styles.cta}>
-        <motion.div
-          className={styles.ctaContainer}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className={styles.ctaHeading}>Ready to get started?</h2>
-          <p className={styles.ctaText}>
-            Let&apos;s talk about which services are right for your business.
-            No pressure, no jargon, just a conversation.
-          </p>
-          <Link href="/products" className={styles.ctaButton}>
-            See Products →
-          </Link>
-        </motion.div>
-      </section>
+      <CtaBlock
+        heading="Ready to get started?"
+        flair="started?"
+        text="Let's talk about which services are right for your business. No pressure, no jargon, just a conversation."
+        primary={{ label: "See Products", href: "/products" }}
+      />
     </>
   );
 }

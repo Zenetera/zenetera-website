@@ -44,7 +44,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: 14px var(--pad);
+  min-height: var(--nav-h);
+  padding: 12px var(--pad);
   max-width: var(--max-width-wide);
   margin: 0 auto;
 }
@@ -254,8 +255,7 @@
 
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 880px) {
-  .links,
-  .cta {
+  .links {
     display: none;
   }
 
@@ -271,6 +271,11 @@
 @media (max-width: 400px) {
   .wordmark {
     width: 112px;
+  }
+
+  /* Not enough room for the pill beside the logo and the menu button. */
+  .nav .cta {
+    display: none;
   }
 }
 
