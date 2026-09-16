@@ -17,7 +17,7 @@ export default async function BlogPage() {
   return (
     <>
       <BlogIndex posts={posts} />
-      <FinalCTA />
+      <FinalCTA index="01" />
     </>
   );
 }

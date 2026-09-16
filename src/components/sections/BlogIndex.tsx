@@ -2,8 +2,12 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import type { BlogPost } from "@/content/blogs";
+import Arrow from "@/components/ui/Arrow";
+import Card, { type CardTone } from "@/components/ui/Card";
+import Reveal from "@/motion/Reveal";
+import { cx } from "@/lib/cx";
+import PageHero from "./PageHero";
 import styles from "./BlogIndex.module.css";
 
 interface Props {
@@ -11,6 +15,7 @@ interface Props {
 }
 
 const ALL = "All";
+const tones: CardTone[] = ["accent", "neutral", "dark"];
 
 export default function BlogIndex({ posts }: Props) {
   const categories = useMemo(() => {
@@ -25,9 +30,9 @@ export default function BlogIndex({ posts }: Props) {
   const featured = posts.find((p) => p.featured) ?? posts[0];
   const rest = posts.filter((p) => p.slug !== featured?.slug);
 
+  const q = query.trim().toLowerCase();
   const filteredRest = rest.filter((p) => {
     const matchesCategory = active === ALL || p.category === active;
-    const q = query.trim().toLowerCase();
     const matchesQuery =
       !q ||
       p.title.toLowerCase().includes(q) ||
@@ -37,142 +42,105 @@ export default function BlogIndex({ posts }: Props) {
   });
 
   const showFeatured =
+    Boolean(featured) &&
     (active === ALL || featured?.category === active) &&
-    (!query ||
-      featured?.title.toLowerCase().includes(query.toLowerCase()) ||
-      featured?.excerpt.toLowerCase().includes(query.toLowerCase()));
+    (!q || featured?.title.toLowerCase().includes(q) || featured?.excerpt.toLowerCase().includes(q));
+
+  const count = filteredRest.length + (showFeatured ? 1 : 0);
 
   return (
-    <section className={styles.section}>
-      <div className={styles.container}>
-        {/* ─── Hero ─────────────────────────────── */}
-        <motion.div
-          className={styles.hero}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <span className={styles.eyebrow}>The ZENETERA blog</span>
-          <h1 className={styles.heading}>
-            Playbooks for small businesses growing online.
-          </h1>
-          <p className={styles.lede}>
-            Field notes, frameworks and honest takes from building websites,
-            automation, chatbots and AI for small businesses and startups.
-          </p>
-        </motion.div>
+    <>
+      <PageHero
+        eyebrow="The ZENETERA blog"
+        heading="Playbooks for small businesses growing online."
+        flair="growing online."
+        sub="Field notes, frameworks and honest takes from building websites, automation, chatbots and AI for small businesses and startups."
+      />
 
-        {/* ─── Toolbar ───────────────────────────── */}
-        <motion.div
-          className={styles.toolbar}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-        >
-          <div className={styles.filters} role="tablist" aria-label="Categories">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                role="tab"
-                aria-selected={active === cat}
-                className={`${styles.chip} ${active === cat ? styles.chipActive : ""}`}
-                onClick={() => setActive(cat)}
+      <section className={`pad ${styles.section}`}>
+        <div className="wide">
+          {/* ─── Toolbar ───────────────────────────── */}
+          <div className={styles.toolbar}>
+            <div className={styles.filters} role="group" aria-label="Categories">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  aria-pressed={active === cat}
+                  className={cx(styles.chip, active === cat && styles.chipActive)}
+                  onClick={() => setActive(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <label className={styles.searchWrap}>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
               >
-                {cat}
-              </button>
-            ))}
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                className={styles.search}
+                placeholder="Search posts…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search blog posts"
+              />
+            </label>
           </div>
-          <label className={styles.searchWrap}>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              type="search"
-              className={styles.search}
-              placeholder="Search posts…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              aria-label="Search blog posts"
-            />
-          </label>
-        </motion.div>
 
-        {/* ─── Featured ──────────────────────────── */}
-        {featured && showFeatured && (
-          <motion.div
-            className={styles.featuredWrap}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Link href={`/blog/${featured.slug}`} className={styles.featured}>
-              <div className={styles.featuredArt}>
-                <div className={styles.featuredGradient} />
-                <span className={styles.featuredBadge}>Featured</span>
-                <div className={styles.featuredMark}>Z.</div>
-              </div>
-              <div className={styles.featuredBody}>
-                <span className={styles.featuredCategory}>
-                  {featured.category}
-                </span>
-                <h2 className={styles.featuredTitle}>{featured.title}</h2>
-                <p className={styles.featuredExcerpt}>{featured.excerpt}</p>
-                <div className={styles.featuredMeta}>
-                  <span>{featured.readTime}</span>
-                  <span className={styles.dot} />
-                  <span>Updated {featured.updated}</span>
+          {/* ─── Featured ──────────────────────────── */}
+          {featured && showFeatured && (
+            <Reveal className={styles.featuredWrap}>
+              <Link href={`/blog/${featured.slug}`} className={styles.featured}>
+                <div className={styles.featuredArt}>
+                  <span className={styles.featuredBadge}>Featured</span>
+                  <span className={styles.featuredMark} aria-hidden="true">
+                    Z.
+                  </span>
                 </div>
-                <span className={styles.featuredCta}>
-                  Read the article
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M3 8H13M13 8L9 4M13 8L9 12"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </Link>
-          </motion.div>
-        )}
+                <div className={styles.featuredBody}>
+                  <span className={styles.category}>{featured.category}</span>
+                  <h2 className={styles.featuredTitle}>{featured.title}</h2>
+                  <p className={styles.featuredExcerpt}>{featured.excerpt}</p>
+                  <div className={styles.meta}>
+                    <span>{featured.readTime}</span>
+                    <span className={styles.dot} />
+                    <span>Updated {featured.updated}</span>
+                  </div>
+                  <span className={styles.featuredCta}>
+                    Read the article
+                    <Arrow size={14} />
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          )}
 
-        {/* ─── Grid ──────────────────────────────── */}
-        <div className={styles.gridHeader}>
-          <h2 className={styles.gridTitle}>
-            {active === ALL ? "All articles" : active}
-          </h2>
-          <span className={styles.gridCount}>
-            {filteredRest.length +
-              (showFeatured && featured ? 1 : 0)}{" "}
-            post{filteredRest.length + (showFeatured ? 1 : 0) === 1 ? "" : "s"}
-          </span>
-        </div>
+          {/* ─── Grid ──────────────────────────────── */}
+          <div className={styles.gridHeader}>
+            <h2 className={styles.gridTitle}>{active === ALL ? "All articles" : active}</h2>
+            <span className={styles.gridCount}>
+              {count} post{count === 1 ? "" : "s"}
+            </span>
+          </div>
 
-        <AnimatePresence mode="popLayout">
           {filteredRest.length === 0 && !showFeatured ? (
-            <motion.div
-              key="empty"
-              className={styles.empty}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
+            <div className={styles.empty}>
               <p>No articles match that yet.</p>
               <button
+                type="button"
                 className={styles.emptyReset}
                 onClick={() => {
                   setActive(ALL);
@@ -181,47 +149,32 @@ export default function BlogIndex({ posts }: Props) {
               >
                 Clear filters
               </button>
-            </motion.div>
+            </div>
           ) : (
-            <motion.div
-              key="grid"
-              className={styles.grid}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              {filteredRest.map((post) => (
-                <motion.article
-                  key={post.slug}
-                  className={styles.card}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
+            <div key={`${active}-${q}`} className={styles.grid}>
+              {filteredRest.map((post, i) => (
+                <article key={post.slug} className={styles.cell} style={{ animationDelay: `${(i % 3) * 70}ms` }}>
                   <Link href={`/blog/${post.slug}`} className={styles.cardLink}>
-                    <div className={styles.cardArt}>
-                      <span className={styles.cardMark}>Z.</span>
-                    </div>
-                    <div className={styles.cardBody}>
-                      <span className={styles.cardCategory}>
-                        {post.category}
+                    <Card tone={tones[i % tones.length]} shape compact className={styles.card}>
+                      <span className={styles.cardMark} aria-hidden="true">
+                        Z.
                       </span>
+                      <span className={styles.category}>{post.category}</span>
                       <h3 className={styles.cardTitle}>{post.title}</h3>
                       <p className={styles.cardExcerpt}>{post.excerpt}</p>
-                      <div className={styles.cardMeta}>
+                      <div className={styles.meta}>
                         <span>{post.readTime}</span>
                         <span className={styles.dot} />
                         <span>Updated {post.updated}</span>
                       </div>
-                    </div>
+                    </Card>
                   </Link>
-                </motion.article>
+                </article>
               ))}
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

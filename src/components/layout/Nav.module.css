@@ -272,7 +272,9 @@
   .wordmark {
     width: 112px;
   }
+}
 
+@media (max-width: 360px) {
   /* Not enough room for the pill beside the logo and the menu button. */
   .nav .cta {
     display: none;

@@ -333,14 +333,16 @@ button {
   pointer-events: none;
 }
 
+/* The path is normalised to length 1 (pathLength="1"), so a dash of 1 draws
+   the full stroke as the offset runs 1 → 0. The stroke scales with the
+   stretched viewBox, which keeps Chrome's dash maths reliable. */
 .flair path {
   stroke: var(--color-accent);
-  stroke-width: 7;
+  stroke-width: 6;
   fill: none;
   stroke-linecap: round;
-  stroke-dasharray: 1;
+  stroke-dasharray: 1 1;
   stroke-dashoffset: 1;
-  vector-effect: non-scaling-stroke;
   animation: drawline 0.9s 1.3s var(--ease) forwards;
 }
 

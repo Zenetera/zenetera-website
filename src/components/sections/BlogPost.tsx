@@ -1,8 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
 import type { BlogBlock, BlogPost } from "@/content/blogs";
+import Arrow from "@/components/ui/Arrow";
+import Card from "@/components/ui/Card";
+import Reveal from "@/motion/Reveal";
 import styles from "./BlogPost.module.css";
 
 interface Props {
@@ -14,26 +14,14 @@ export default function BlogPostView({ post, related }: Props) {
   return (
     <article className={styles.article}>
       {/* ─── Hero ──────────────────────────────── */}
-      <header className={styles.hero}>
+      <header className={`pad ${styles.hero}`}>
         <div className={styles.heroInner}>
           <Link href="/blog" className={styles.backLink}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M13 8H3M3 8L7 4M3 8L7 12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Arrow size={14} rotate={180} />
             All articles
           </Link>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className={styles.heroCopy}>
             <span className={styles.category}>{post.category}</span>
             <h1 className={styles.title}>{post.title}</h1>
             <p className={styles.excerpt}>{post.excerpt}</p>
@@ -42,12 +30,12 @@ export default function BlogPostView({ post, related }: Props) {
               <span className={styles.dot} />
               <span>Updated {post.updated}</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </header>
 
       {/* ─── Body ──────────────────────────────── */}
-      <div className={styles.body}>
+      <div className={`pad ${styles.body}`}>
         <div className={styles.content}>
           {post.blocks.map((block, i) => (
             <BlockRenderer key={i} block={block} />
@@ -57,26 +45,27 @@ export default function BlogPostView({ post, related }: Props) {
 
       {/* ─── Related ───────────────────────────── */}
       {related.length > 0 && (
-        <section className={styles.relatedSection}>
-          <div className={styles.relatedInner}>
-            <div className={styles.relatedHeader}>
+        <section className={`pad ${styles.relatedSection}`}>
+          <div className="wide">
+            <Reveal className={styles.relatedHeader}>
               <h2 className={styles.relatedHeading}>Keep reading</h2>
               <Link href="/blog" className={styles.relatedAll}>
-                All articles →
+                All articles
+                <Arrow size={14} />
               </Link>
-            </div>
+            </Reveal>
             <div className={styles.relatedGrid}>
-              {related.map((rp) => (
-                <Link
-                  key={rp.slug}
-                  href={`/blog/${rp.slug}`}
-                  className={styles.relatedCard}
-                >
-                  <span className={styles.relatedCategory}>{rp.category}</span>
-                  <h3 className={styles.relatedTitle}>{rp.title}</h3>
-                  <p className={styles.relatedExcerpt}>{rp.excerpt}</p>
-                  <span className={styles.relatedMeta}>{rp.readTime}</span>
-                </Link>
+              {related.map((rp, i) => (
+                <Reveal key={rp.slug} delay={i as 0 | 1} className={styles.relatedCell}>
+                  <Link href={`/blog/${rp.slug}`} className={styles.relatedLink}>
+                    <Card tone={i === 0 ? "accent" : "surface"} shape compact className={styles.relatedCard}>
+                      <span className={styles.category}>{rp.category}</span>
+                      <h3 className={styles.relatedTitle}>{rp.title}</h3>
+                      <p className={styles.relatedExcerpt}>{rp.excerpt}</p>
+                      <span className={styles.relatedMeta}>{rp.readTime}</span>
+                    </Card>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -119,7 +108,7 @@ function BlockRenderer({ block }: { block: BlogBlock }) {
     case "callout":
       return (
         <aside className={styles.callout}>
-          <div className={styles.calloutBar} aria-hidden />
+          <i className={styles.calloutDot} aria-hidden="true" />
           <p>{block.text}</p>
         </aside>
       );
@@ -136,9 +125,7 @@ function BlockRenderer({ block }: { block: BlogBlock }) {
       return (
         <blockquote className={styles.quote}>
           <p>{block.text}</p>
-          {block.attribution && (
-            <cite className={styles.quoteCite}>— {block.attribution}</cite>
-          )}
+          {block.attribution && <cite className={styles.quoteCite}>{block.attribution}</cite>}
         </blockquote>
       );
 

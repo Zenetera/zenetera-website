@@ -1,31 +1,28 @@
-"use client";
-
+import Card, { type CardTone } from "@/components/ui/Card";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Reveal from "@/motion/Reveal";
+import PricingTable, { type PricingGroup, type PricingTier } from "./PricingTable";
 import styles from "./PricingCare.module.css";
 
 /* ── Required Care Data ────────────────────────────── */
-const careTiers = ["Starter", "Business", "E-commerce", "Web App"];
-const carePrices = ["$30/mo", "$60/mo", "$80/mo", "From $120/mo"];
+const careTiers: PricingTier[] = [
+  { name: "Starter", price: "$30/mo" },
+  { name: "Business", price: "$60/mo" },
+  { name: "E-commerce", price: "$80/mo" },
+  { name: "Web App", price: "From $120/mo" },
+];
 
-type CellValue = true | string;
-
-interface CareRow {
-  feature: string;
-  values: CellValue[];
-}
-
-const careRows: CareRow[] = [
-  { feature: "Hosting", values: [true, true, true, true] },
-  { feature: "Domain management", values: [true, true, true, true] },
-  { feature: "Security updates", values: [true, true, true, true] },
-  { feature: "SSL certificate", values: [true, true, true, true] },
-  { feature: "Automatic backups", values: [true, true, true, true] },
+const careGroups: PricingGroup[] = [
   {
-    feature: "Uptime monitoring",
-    values: ["Basic", "Standard", "Advanced", "Advanced"],
-  },
-  {
-    feature: "Technical support",
-    values: ["Email", "Priority", "Priority", "Dedicated"],
+    rows: [
+      { feature: "Hosting", values: [true, true, true, true] },
+      { feature: "Domain management", values: [true, true, true, true] },
+      { feature: "Security updates", values: [true, true, true, true] },
+      { feature: "SSL certificate", values: [true, true, true, true] },
+      { feature: "Automatic backups", values: [true, true, true, true] },
+      { feature: "Uptime monitoring", values: ["Basic", "Standard", "Advanced", "Advanced"] },
+      { feature: "Technical support", values: ["Email", "Priority", "Priority", "Dedicated"] },
+    ],
   },
 ];
 
@@ -36,8 +33,7 @@ const upgrades = [
     price: "$30",
     note: "/month",
     title: "Essential care plan",
-    description:
-      "Small fixes, plugin updates, and a monthly health check. Best for sites that rarely change.",
+    description: "Small fixes, plugin updates, and a monthly health check. Best for sites that rarely change.",
   },
   {
     label: "Growth",
@@ -57,70 +53,61 @@ const upgrades = [
   },
 ];
 
-/* ── Component ─────────────────────────────────────── */
+const tones: CardTone[] = ["surface", "accent", "dark"];
+
 export default function PricingCare() {
   return (
-    <section className={styles.section}>
-      <div className={styles.container}>
-        {/* Required care header */}
-        <div className={styles.header}>
-          <span className={styles.label}>Maintenance</span>
-          <h2 className={styles.heading}>Keep your site running strong</h2>
-          <p className={styles.subtitle}>
+    <section className={`pad ${styles.section}`}>
+      <div className="wide">
+        {/* Required care */}
+        <Reveal>
+          <Eyebrow index="03">Maintenance</Eyebrow>
+        </Reveal>
+
+        <div className={styles.head}>
+          <Reveal as="h2" className={styles.heading}>
+            Keep your site running strong
+          </Reveal>
+          <Reveal as="p" delay={1} className={styles.lede}>
             Hosting, security, and updates handled. You focus on your business.
-          </p>
+          </Reveal>
         </div>
 
-        {/* Required care table */}
-        <div className={styles.tableWrap}>
-          <div className={styles.tierHeader}>
-            <div />
-            {careTiers.map((name, i) => (
-              <div key={name} className={styles.tierCol}>
-                <span className={styles.tierName}>{name}</span>
-                <span className={styles.tierPrice}>{carePrices[i]}</span>
-              </div>
-            ))}
-          </div>
-
-          {careRows.map((row) => (
-            <div key={row.feature} className={styles.row}>
-              <div className={styles.featureName}>{row.feature}</div>
-              {row.values.map((val, i) => (
-                <div key={i} className={styles.cell}>
-                  {val === true ? (
-                    <span className={styles.check}>✓</span>
-                  ) : (
-                    <span className={styles.cellText}>{val}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <Reveal delay={1}>
+          <PricingTable tiers={careTiers} groups={careGroups} />
+        </Reveal>
 
         {/* Optional support upgrades */}
-        <div className={styles.upgradesSection}>
-          <div className={styles.upgradesHeader}>
-            <span className={styles.label}>Optional</span>
-            <h2 className={styles.heading}>Support upgrades</h2>
-            <p className={styles.subtitle}>
-              Service upgrades for ongoing content changes, fixes, and growth.
-              Not infrastructure — these sit on top of your care plan.
-            </p>
+        <div className={styles.upgrades}>
+          <Reveal>
+            <Eyebrow index="04">Optional</Eyebrow>
+          </Reveal>
+
+          <div className={styles.head}>
+            <Reveal as="h2" className={styles.heading}>
+              Support upgrades
+            </Reveal>
+            <Reveal as="p" delay={1} className={styles.lede}>
+              Service upgrades for ongoing content changes, fixes, and growth. Not infrastructure — these sit on top
+              of your care plan.
+            </Reveal>
           </div>
 
-          <div className={styles.upgradesGrid}>
-            {upgrades.map((u) => (
-              <div key={u.label} className={styles.upgradeCard}>
-                <span className={styles.upgradeLabel}>{u.label}</span>
-                <div className={styles.upgradePrice}>
-                  {u.price}
-                  <span className={styles.upgradePriceNote}>{u.note}</span>
-                </div>
-                <h3 className={styles.upgradeTitle}>{u.title}</h3>
-                <p className={styles.upgradeDescription}>{u.description}</p>
-              </div>
+          <div className={styles.grid}>
+            {upgrades.map((u, i) => (
+              <Reveal key={u.label} delay={i as 0 | 1 | 2} className={styles.cell}>
+                <Card as="article" tone={tones[i]} shape compact className={styles.card}>
+                  <Eyebrow compact as="span" className={styles.cardLabel}>
+                    {u.label}
+                  </Eyebrow>
+                  <p className={styles.price}>
+                    {u.price}
+                    <span className={styles.priceNote}>{u.note}</span>
+                  </p>
+                  <h3 className={styles.cardTitle}>{u.title}</h3>
+                  <p className={styles.description}>{u.description}</p>
+                </Card>
+              </Reveal>
             ))}
           </div>
         </div>

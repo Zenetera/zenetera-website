@@ -9,7 +9,12 @@ import styles from "./FinalCTA.module.css";
 
 const SERVICES = ["Web Design", "E-commerce", "Branding", "Development", "Automation", "AI", "Chatbots", "Other"] as const;
 
-export default function FinalCTA() {
+interface FinalCTAProps {
+  /** Section index shown in the eyebrow pill. */
+  index?: string;
+}
+
+export default function FinalCTA({ index = "06" }: FinalCTAProps) {
   const [state, handleSubmit] = useForm("xdawqgep");
 
   if (state.succeeded) {
@@ -40,7 +45,7 @@ export default function FinalCTA() {
     <section className={`${styles.section} zone-top`} id="contact" data-theme="dark">
       <div className="pad wide">
         <Reveal>
-          <Eyebrow index="06">Contact</Eyebrow>
+          <Eyebrow index={index}>Contact</Eyebrow>
         </Reveal>
 
         <div className={styles.grid}>

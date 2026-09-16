@@ -1,12 +1,12 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Card from "@/components/ui/Card";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Reveal from "@/motion/Reveal";
 import styles from "./AboutValues.module.css";
 
 const values = [
   {
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10" />
         <circle cx="12" cy="12" r="4" />
         <line x1="21.17" y1="8" x2="12" y2="8" />
@@ -19,7 +19,7 @@ const values = [
   },
   {
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M3 12h4l3 9 4-18 3 9h4" />
       </svg>
     ),
@@ -28,7 +28,7 @@ const values = [
   },
   {
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10" />
         <polyline points="12 6 12 12 16 14" />
       </svg>
@@ -38,7 +38,7 @@ const values = [
   },
   {
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
         <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
         <line x1="12" y1="22.08" x2="12" y2="12" />
@@ -49,7 +49,7 @@ const values = [
   },
   {
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M12 20h9" />
         <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
       </svg>
@@ -59,7 +59,7 @@ const values = [
   },
   {
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
         <circle cx="12" cy="7" r="4" />
       </svg>
@@ -69,49 +69,35 @@ const values = [
   },
 ];
 
-const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const fadeIn = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 export default function AboutValues() {
   return (
-    <section className={styles.section}>
-      <div className={styles.container}>
-        <motion.div
-          className={styles.header}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className={styles.label}>What we stand for</span>
-          <h2 className={styles.heading}>Six principles. Nothing Extra.</h2>
-          <p className={styles.subtitle}>
-            The rules we hold ourselves to on every project, whether it&apos;s
-            a simple landing page or a full custom platform.
-          </p>
-        </motion.div>
+    <section className={`pad ${styles.section} zone-top`} data-theme="dark">
+      <div className="wide">
+        <Reveal>
+          <Eyebrow index="02">What we stand for</Eyebrow>
+        </Reveal>
 
-        <motion.div
-          className={styles.grid}
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-        >
-          {values.map((value) => (
-            <motion.div key={value.title} className={styles.card} variants={fadeIn}>
-              <div className={styles.iconWrap}>{value.icon}</div>
-              <h3 className={styles.cardTitle}>{value.title}</h3>
-              <p className={styles.cardText}>{value.text}</p>
-            </motion.div>
+        <div className={styles.head}>
+          <Reveal as="h2" className={styles.heading}>
+            Six principles. Nothing Extra.
+          </Reveal>
+          <Reveal as="p" delay={1} className={styles.lede}>
+            The rules we hold ourselves to on every project, whether it&apos;s a simple landing page or a full custom
+            platform.
+          </Reveal>
+        </div>
+
+        <div className={styles.grid}>
+          {values.map((value, i) => (
+            <Reveal key={value.title} delay={(i % 3) as 0 | 1 | 2} className={styles.cell}>
+              <Card tone="glass" compact className={styles.card}>
+                <span className={styles.icon}>{value.icon}</span>
+                <h3 className={styles.cardTitle}>{value.title}</h3>
+                <p className={styles.cardText}>{value.text}</p>
+              </Card>
+            </Reveal>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

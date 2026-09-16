@@ -1,6 +1,5 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Reveal from "@/motion/Reveal";
 import styles from "./AboutApproach.module.css";
 
 const pillars = [
@@ -28,36 +27,22 @@ const pillars = [
 
 export default function AboutApproach() {
   return (
-    <section className={styles.section}>
-      <div className={styles.container}>
-        <motion.div
-          className={styles.header}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className={styles.label}>How we work</span>
-          <h2 className={styles.heading}>A deliberate, pragmatic approach</h2>
+    <section className={`pad ${styles.section}`}>
+      <div className="wide">
+        <Reveal>
+          <Eyebrow index="03">How we work</Eyebrow>
+        </Reveal>
+        <Reveal as="h2" className={styles.heading}>
+          A deliberate, pragmatic approach
+        </Reveal>
 
-        </motion.div>
-
-        <div className={styles.list}>
-          {pillars.map((p, i) => (
-            <motion.div
-              key={p.number}
-              className={styles.item}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-            >
-              <span className={styles.number}>{p.number}</span>
-              <div className={styles.content}>
-                <h3 className={styles.itemTitle}>{p.title}</h3>
-                <p className={styles.itemText}>{p.text}</p>
-              </div>
-            </motion.div>
+        <div className={styles.rows}>
+          {pillars.map((p) => (
+            <Reveal key={p.number} className={styles.row}>
+              <span className={styles.num}>{p.number}</span>
+              <h3 className={styles.title}>{p.title}</h3>
+              <p className={styles.text}>{p.text}</p>
+            </Reveal>
           ))}
         </div>
       </div>
