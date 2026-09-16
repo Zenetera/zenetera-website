@@ -2,376 +2,283 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: rgba(245, 245, 247, 0.6);
-  backdrop-filter: blur(16px) saturate(1.8);
-  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  color: var(--color-text);
+  transition: color 0.5s var(--ease);
+}
+
+/* Blurred backdrop that fades in once scrolled */
+.pillbg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  background: linear-gradient(rgba(250, 250, 250, 0.8), rgba(250, 250, 250, 0.55));
+  border-bottom: 1px solid rgba(10, 10, 10, 0.06);
   transition:
-    background-color 0.3s ease,
-    backdrop-filter 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    opacity 0.4s ease,
+    background 0.4s ease;
+  pointer-events: none;
 }
 
-/* ── On dark backgrounds (homepage hero) ─────── */
-.onDark .logo {
-  color: #ffffff;
+.scrolled .pillbg {
+  opacity: 1;
 }
 
-.onDark .link {
-  color: rgba(255, 255, 255, 0.85);
+.onDark {
+  color: var(--color-text-on-dark);
+  --fg: var(--color-text-on-dark);
+  --btn-bg: var(--color-text-on-dark);
+  --btn-fg: var(--color-text);
 }
 
-.onDark .link:hover {
-  color: #ffffff;
+.onDark .pillbg {
+  background: linear-gradient(rgba(10, 10, 10, 0.74), rgba(10, 10, 10, 0.5));
+  border-bottom-color: rgba(245, 245, 245, 0.08);
 }
 
-.onDark .dropdownTrigger {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.onDark .dropdownTrigger:hover {
-  color: #ffffff;
-}
-
-.onDark .hamburger,
-.onDark .hamburger::before,
-.onDark .hamburger::after {
-  background: #ffffff;
-}
-
-/* ── On light backgrounds (subpages) ─────────── */
-.onLight .logo {
-  color: var(--color-text);
-}
-
-.onLight .link {
-  color: var(--color-text-secondary);
-}
-
-.onLight .link:hover {
-  color: var(--color-text);
-}
-
-.onLight .dropdownTrigger {
-  color: var(--color-text-secondary);
-}
-
-.onLight .dropdownTrigger:hover {
-  color: var(--color-text);
-}
-
-.onLight .hamburger,
-.onLight .hamburger::before,
-.onLight .hamburger::after {
-  background: var(--color-text);
-}
-
-/* ── Scrolled state ──────────────────────────── */
-.onDark.scrolled {
-  background-color: rgba(13, 13, 18, 0.75);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05),
-    0 4px 30px rgba(0, 0, 0, 0.15);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
-}
-
-.onLight.scrolled {
-  background-color: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.4),
-    0 4px 30px rgba(0, 0, 0, 0.06);
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-}
-
-/* ── Base nav layout ─────────────────────────── */
+/* ── Bar ──────────────────────────────────────────── */
 .nav {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  max-width: var(--max-width);
+  gap: var(--space-4);
+  padding: 14px var(--pad);
+  max-width: var(--max-width-wide);
   margin: 0 auto;
-  padding: var(--space-4) var(--space-6);
 }
 
-.logo {
+.brand {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-size: var(--text-lg);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  transition: color 0.3s ease;
-  flex-shrink: 0;
+  gap: 8px;
+  flex: none;
+  position: relative;
+  z-index: 2;
 }
 
-.logoName {
-  width: auto;
+.mark {
+  width: 36px;
   height: auto;
-  max-height: 36px; 
+}
+
+.wordmark {
+  width: 148px;
+  height: auto;
+}
+
+.mark,
+.wordmark {
+  transition: filter 0.4s ease;
+}
+
+/* The logo files are black + red on transparent; inverting lightness while
+   keeping hue turns the black white and leaves the red "E" red. */
+.onDark .mark,
+.onDark .wordmark {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: 30px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .link {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  transition: color 0.15s ease;
-}
-
-/* ── Dropdown ─────────────────────────────────── */
-.dropdownWrapper {
   position: relative;
+  display: inline-block;
+  padding: 6px 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
 }
 
-.dropdownTrigger {
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease);
+}
+
+.link:hover,
+.link[aria-current="page"] {
+  opacity: 1;
+}
+
+.link:hover::after,
+.link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.actions {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  padding: 0;
-  transition: color 0.15s ease;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
-.chevron {
-  transition: transform var(--transition-fast);
-}
-
-.chevronOpen {
-  transform: rotate(180deg);
-}
-
-/* Dropdown panel adapts to context */
-.onDark .dropdown {
-  background: rgba(20, 20, 28, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(20px);
-}
-
-.onDark .dropdownLink {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.onDark .dropdownLink:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.onLight .dropdown {
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-}
-
-.onLight .dropdownLink {
-  color: var(--color-text-secondary);
-}
-
-.onLight .dropdownLink:hover {
-  color: var(--color-text);
-  background: var(--color-bg-alt);
-}
-
-.dropdown {
-  position: absolute;
-  top: calc(100% + var(--space-3));
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 180px;
-  border-radius: var(--radius-md);
-  padding: var(--space-2) 0;
-}
-
-.dropdownLink {
-  display: block;
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
-  transition: all 0.15s ease;
-}
-
-/* ── CTA Button ───────────────────────────────── */
-.ctaButton {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-2) var(--space-6);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: #ffffff;
-  background: var(--color-accent);
-  border-radius: var(--radius-full);
-  transition: all 0.2s ease;
-  box-shadow: 0 0 20px rgba(214, 59, 49, 0.2);
-}
-
-.ctaButton:hover {
-  background: var(--color-accent-light);
-  box-shadow: 0 0 30px rgba(214, 59, 49, 0.35);
-  transform: translateY(-1px);
-}
-
-/* ── Hamburger ────────────────────────────────── */
+/* ── Hamburger ────────────────────────────────────── */
 .menuButton {
   display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
   position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.2px var(--hairline-strong);
+  color: inherit;
 }
 
-.hamburger,
-.hamburger::before,
-.hamburger::after {
-  display: block;
-  width: 20px;
-  height: 2px;
-  border-radius: 2px;
-  transition: all var(--transition-fast);
+.bar {
   position: absolute;
-  left: 4px;
+  left: 13px;
+  width: 18px;
+  height: 1.8px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.4s var(--ease);
 }
 
-.hamburger {
-  top: 13px;
+.bar:first-child {
+  top: 18px;
 }
 
-.hamburger::before {
-  content: "";
-  top: -6px;
+.bar:last-child {
+  top: 24px;
 }
 
-.hamburger::after {
-  content: "";
-  top: 6px;
+.menuButtonOpen .bar:first-child {
+  transform: translateY(3px) rotate(45deg);
 }
 
-.hamburgerOpen {
-  background: transparent !important;
+.menuButtonOpen .bar:last-child {
+  transform: translateY(-3px) rotate(-45deg);
 }
 
-.hamburgerOpen::before {
-  top: 0;
-  transform: rotate(45deg);
+/* ── Mobile menu ──────────────────────────────────── */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 var(--pad) clamp(28px, 6vh, 56px);
+  background: var(--color-bg-dark);
+  color: var(--color-text-on-dark);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-2%);
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease),
+    visibility 0s linear 0.45s;
 }
 
-.hamburgerOpen::after {
-  top: 0;
-  transform: rotate(-45deg);
+.menuOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease),
+    visibility 0s;
 }
 
-/* ── Mobile Menu ──────────────────────────────── */
-.onDark .mobileMenu {
-  background: rgba(13, 13, 18, 0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.onDark .mobileLink {
-  color: rgba(255, 255, 255, 0.6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.onDark .mobileDropdownTrigger {
-  color: rgba(255, 255, 255, 0.6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.onLight .mobileMenu {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.onLight .mobileLink {
-  color: var(--color-text-secondary);
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.onLight .mobileDropdownTrigger {
-  color: var(--color-text-secondary);
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.mobileMenu {
-  overflow: hidden;
-}
-
-.mobileLinks {
+.menuLinks {
   display: flex;
   flex-direction: column;
-  padding: var(--space-4) var(--space-6) var(--space-6);
+  gap: 2px;
+  width: 100%;
+  --fg: var(--color-text-on-dark);
+  --hairline: var(--hair-on-dark);
+  --hairline-strong: var(--hair-on-dark-strong);
 }
 
-.mobileLink {
-  display: block;
-  padding: var(--space-3) 0;
-  font-size: var(--text-base);
-  font-weight: 500;
+.menuItem {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
 }
 
-.mobileDropdownTrigger {
+.menuOpen .menuItem {
+  opacity: 1;
+  transform: none;
+}
+
+.menuLink {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) 0;
-  font-size: var(--text-base);
-  font-weight: 500;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--hair-on-dark);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 9vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.menuLink[aria-current="page"] {
+  color: var(--color-accent-light);
+}
+
+.menuIndex {
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+}
+
+.menuCta {
+  margin-top: 24px;
   width: 100%;
 }
 
-.mobileSubMenu {
-  padding-left: var(--space-4);
-  overflow: hidden;
-}
-
-.mobileCta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: var(--space-4);
-  padding: var(--space-3) var(--space-8);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: #ffffff;
-  background: var(--color-accent);
-  border-radius: var(--radius-full);
-}
-
-@media (max-width: 768px) {
-  .links {
-    display: none;
-  }
-
-  .ctaButton {
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 880px) {
+  .links,
+  .cta {
     display: none;
   }
 
   .menuButton {
     display: block;
+  }
+
+  .wordmark {
+    width: 128px;
+  }
+}
+
+@media (max-width: 400px) {
+  .wordmark {
+    width: 112px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu,
+  .menuItem,
+  .bar,
+  .link::after {
+    transition: none;
   }
 }

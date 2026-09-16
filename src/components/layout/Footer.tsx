@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Arrow from "@/components/ui/Arrow";
 import styles from "./Footer.module.css";
 
 const serviceLinks = [
@@ -21,76 +22,58 @@ const socialLinks = [
   { href: "https://wa.me/447477911934", label: "WhatsApp" },
 ];
 
+function LinkColumn({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+  return (
+    <div className={styles.column}>
+      <h4 className={styles.columnTitle}>{title}</h4>
+      <ul className={styles.list}>
+        {links.map(({ href, label }) => (
+          <li key={label}>
+            <Link href={href} className={styles.footerLink}>
+              <span>{label}</span>
+              <Arrow size={12} className={styles.linkArrow} />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} data-theme="dark">
       <div className={styles.container}>
         <div className={styles.grid}>
-          <div className={styles.column}>
-            <h4 className={styles.columnTitle}>Services</h4>
-            <ul className={styles.list}>
-              {serviceLinks.map(({ href, label }) => (
-                <li key={label}>
-                  <Link href={href} className={styles.footerLink}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={styles.column}>
-            <h4 className={styles.columnTitle}>Company</h4>
-            <ul className={styles.list}>
-              {companyLinks.map(({ href, label }) => (
-                <li key={label}>
-                  <Link href={href} className={styles.footerLink}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={styles.column}>
-            <h4 className={styles.columnTitle}>Social</h4>
-            <ul className={styles.list}>
-              {socialLinks.map(({ href, label }) => (
-                <li key={label}>
-                  <Link href={href} className={styles.footerLink}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <LinkColumn title="Services" links={serviceLinks} />
+          <LinkColumn title="Company" links={companyLinks} />
+          <LinkColumn title="Social" links={socialLinks} />
 
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>Newsletter</h4>
-            <p className={styles.newsletterText}>
-              Get tips on growing your business online.
-            </p>
-            <form
-              className={styles.form}
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <p className={styles.newsletterText}>Get tips on growing your business online.</p>
+            <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Your email"
                 className={styles.input}
                 aria-label="Email for newsletter"
+                autoComplete="email"
               />
               <button type="submit" className={styles.submitButton}>
                 Subscribe
+                <Arrow size={14} />
               </button>
             </form>
           </div>
         </div>
 
+        <div className={styles.giant} aria-hidden="true">
+          <span>ZENETERA</span>
+        </div>
+
         <div className={styles.bottom}>
-          <p className={styles.copyright}>
-            &copy; {new Date().getFullYear()} ZENETERA. All rights reserved.
-          </p>
+          <p className={styles.copyright}>&copy; {new Date().getFullYear()} ZENETERA. All rights reserved.</p>
           <div className={styles.legal}>
             <Link href="/privacy" className={styles.legalLink}>
               Privacy
@@ -98,7 +81,9 @@ export default function Footer() {
             <Link href="/terms" className={styles.legalLink}>
               Terms
             </Link>
-            <button className={styles.legalButton}>Cookie settings</button>
+            <button type="button" className={styles.legalButton}>
+              Cookie settings
+            </button>
           </div>
         </div>
       </div>

@@ -59,6 +59,10 @@ export default function RootLayout({
             gtag('config', '${GA_MEASUREMENT_ID}');
           `}
         </Script>
+        {/* Scroll reveals depend on JS; keep content visible without it. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <ReferralBanner />
         <Nav />
         <main>{children}</main>
