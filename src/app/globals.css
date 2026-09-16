@@ -209,14 +209,12 @@ h1 {
   font-size: var(--fs-hero);
   line-height: 0.96;
   letter-spacing: -0.035em;
-  text-transform: uppercase;
 }
 
 h2 {
   font-size: var(--fs-h2);
   line-height: 0.98;
   letter-spacing: -0.03em;
-  text-transform: uppercase;
 }
 
 h3 {
@@ -353,6 +351,16 @@ button {
   to {
     stroke-dashoffset: 0;
   }
+}
+
+/* Flair underlines inside a scroll-reveal wait until the reveal fires. */
+.reveal .flair path {
+  animation-delay: 0.45s;
+  animation-play-state: paused;
+}
+
+.reveal.in .flair path {
+  animation-play-state: running;
 }
 
 /* Word-rise headline masks */

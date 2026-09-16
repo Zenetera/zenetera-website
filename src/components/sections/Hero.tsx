@@ -1,122 +1,84 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
-import styles from "./Hero.module.css";
+import Arrow from "@/components/ui/Arrow";
+import Button from "@/components/ui/Button";
+import WordRise from "@/components/ui/WordRise";
+import Marquee from "@/motion/Marquee";
+import { NICHES } from "@/lib/niches";
 import DashboardIllustration from "./DashboardIllustration";
+import HeroMedia from "./HeroMedia";
+import styles from "./Hero.module.css";
 
-interface HeroProps {
-  heading?: string;
-  subheading?: string;
-}
+/* Existing labels only: the four service categories and the three industries. */
+const marqueeItems = ["Websites", "Automation", "Chatbots", "Google", ...NICHES.map((n) => n.label)];
 
-export default function Hero({ heading, subheading }: HeroProps) {
-  if (heading) {
-    return (
-      <motion.section
-        className={styles.pageHero}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className={styles.pageHeading}>{heading}</h1>
-        {subheading && <p className={styles.pageSubheading}>{subheading}</p>}
-      </motion.section>
-    );
-  }
-
-  return <HomepageHero />;
-}
-
-function HomepageHero() {
-  const heroRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const dashboardY = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const dotGridY = useTransform(scrollYProgress, [0, 1], [0, 50]);
-
+function Star() {
   return (
-    <section className={styles.hero} ref={heroRef}>
-      {/* Background layers */}
-      <motion.div className={styles.dotGrid} style={{ y: dotGridY }} />
-      <div className={styles.grain} />
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className={styles.star}>
+      <path d="M8 0l1.8 6.2L16 8l-6.2 1.8L8 16l-1.8-6.2L0 8l6.2-1.8z" fill="currentColor" />
+    </svg>
+  );
+}
 
-      <div className={styles.split}>
-        {/* ── TOP: Copy + CTA ──────────────────── */}
-        <motion.div
-          className={styles.left}
-          style={{ y: textY, opacity: textOpacity }}
-        >
-          <motion.h1
-            className={styles.heading}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
-            We build the{" "}
-            <span className={styles.headingAccent}>
-              digital infrastructure
-            </span>{" "}
-            your business runs on
-          </motion.h1>
+export default function Hero() {
+  return (
+    <section className={styles.hero}>
+      <div className={`pad wide ${styles.inner}`}>
+        <p className={styles.kicker}>
+          <i className="pulse" aria-hidden="true" />
+          Design. Develop. Automate. Grow.
+        </p>
 
-          <motion.p
-            className={styles.subheading}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Design. Develop. Automate. Grow.
-          </motion.p>
+        <WordRise
+          as="h1"
+          className={styles.heading}
+          text="We build the digital infrastructure your business runs on"
+          flair="digital infrastructure"
+        />
 
-          <motion.div
-            className={styles.ctas}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
-          >
-            <Link href="/#contact" className={styles.ctaPrimary}>
+        <div className={styles.row}>
+          <p className={styles.sub}>
+            We help small businesses, freelancers, and entrepreneurs get more customers through websites,
+            automation, and smarter online presence.
+          </p>
+          <div className={styles.ctas}>
+            <Button href="/#contact" size="lg">
               Book a free audit
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                className={styles.ctaArrow}
-              >
-                <path
-                  d="M3 8H13M13 8L9 4M13 8L9 12"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-            <Link href="/#how-it-works" className={styles.ctaSecondary}>
+            </Button>
+            <Button href="/#how-it-works" variant="ghost" size="lg" arrow="down">
               See how it works
-            </Link>
-          </motion.div>
-        </motion.div>
+            </Button>
+          </div>
+        </div>
 
-        {/* ── BOTTOM: Dashboard Illustration ───────── */}
-        <motion.div
-          className={styles.right}
-          style={{ y: dashboardY }}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <DashboardIllustration />
-        </motion.div>
+        <div className={styles.mediaWrap}>
+          <div className={styles.badge} aria-hidden="true">
+            <svg className={styles.ring} viewBox="0 0 120 120">
+              <defs>
+                <path id="hero-badge-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
+              </defs>
+              <circle className={styles.ringBg} cx="60" cy="60" r="60" />
+              <text>
+                <textPath href="#hero-badge-circle">Zenetera · IT · AI · B2B · Zenetera · IT · AI · B2B ·&#160;</textPath>
+              </text>
+            </svg>
+            <span className={styles.core}>
+              <Arrow size={22} rotate={90} />
+            </span>
+          </div>
+
+          <HeroMedia>
+            <DashboardIllustration cover />
+          </HeroMedia>
+        </div>
       </div>
+
+      <Marquee className={styles.marquee} duration={34} decorative>
+        {marqueeItems.map((item) => (
+          <span key={item} className={styles.marqueeItem}>
+            <span>{item}</span>
+            <Star />
+          </span>
+        ))}
+      </Marquee>
     </section>
   );
 }

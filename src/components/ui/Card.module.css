@@ -21,6 +21,13 @@
   --hairline: rgba(214, 59, 49, 0.22);
 }
 
+.accent2 {
+  background: var(--color-accent-tint-2);
+  --shape: rgba(214, 59, 49, 0.26);
+  --surface: #ffffff;
+  --hairline: rgba(214, 59, 49, 0.26);
+}
+
 .neutral {
   background: var(--color-bg-alt);
   --shape: rgba(10, 10, 10, 0.06);

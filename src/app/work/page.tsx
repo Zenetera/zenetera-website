@@ -1,5 +1,5 @@
 import { buildMetadata } from "@/lib/metadata";
-import Hero from "@/components/sections/Hero";
+import PageHero from "@/components/sections/PageHero";
 import WorkGrid from "@/components/sections/WorkGrid";
 
 export const metadata = buildMetadata({
@@ -12,9 +12,9 @@ export const metadata = buildMetadata({
 export default function WorkPage() {
   return (
     <>
-      <Hero
+      <PageHero
         heading="Our Work"
-        subheading="A selection of projects we have delivered for local service businesses across the UK."
+        sub="A selection of projects we have delivered for local service businesses across the UK."
       />
       <WorkGrid />
     </>

@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { FAQ_CATEGORIES, faqs, type FaqCategory, type FaqLink } from "@/content/faqs";
+import Arrow from "@/components/ui/Arrow";
+import Button from "@/components/ui/Button";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Reveal from "@/motion/Reveal";
+import { cx } from "@/lib/cx";
 import styles from "./FAQ.module.css";
 
 interface FAQProps {
@@ -21,6 +25,8 @@ interface FAQProps {
    * text, so the /faq page uses this; the homepage keeps the compact accordion.
    */
   expanded?: boolean;
+  /** Section index shown in the eyebrow pill. */
+  index?: string;
 }
 
 const anchorFor = (category: string) =>
@@ -33,15 +39,7 @@ function AnswerLink({ link }: { link: FaqLink }) {
   return (
     <Link href={link.href} className={styles.answerLink}>
       {link.label}
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path
-          d="M3 8H13M13 8L9 4M13 8L9 12"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <Arrow size={14} />
     </Link>
   );
 }
@@ -53,17 +51,15 @@ export default function FAQ({
   headingLevel = "h2",
   showAllLink = false,
   expanded = false,
+  index = "05",
 }: FAQProps) {
   const [activeCategory, setActiveCategory] = useState<FaqCategory>(categories[0]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const Heading = headingLevel;
-
   const filteredFaqs = faqs.filter((faq) => faq.category === activeCategory);
 
-  const toggle = (i: number) => {
-    setOpenIndex(openIndex === i ? null : i);
-  };
+  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
   const handleCategoryChange = (cat: FaqCategory) => {
     setActiveCategory(cat);
@@ -71,15 +67,9 @@ export default function FAQ({
   };
 
   const header = (
-    <motion.div
-      className={styles.header}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-    >
-      <span className={styles.label}>FAQ</span>
-      <Heading className={styles.heading}>
+    <Reveal className={styles.header}>
+      <Eyebrow index={index}>FAQ</Eyebrow>
+      <Heading className={cx(styles.heading, headingLevel === "h1" && styles.headingLg)}>
         {heading ?? (
           <>
             Questions?
@@ -89,11 +79,10 @@ export default function FAQ({
         )}
       </Heading>
       <p className={styles.subtitle}>
-        {subtitle ??
-          "Can't find what you're looking for? Book a call and we'll walk you through everything."}
+        {subtitle ?? "Can't find what you're looking for? Book a call and we'll walk you through everything."}
       </p>
 
-      <nav className={styles.categoryNav}>
+      <nav className={styles.categoryNav} aria-label="FAQ categories">
         {categories.map((cat) =>
           expanded ? (
             <a key={cat} href={`#${anchorFor(cat)}`} className={styles.categoryBtn}>
@@ -102,8 +91,10 @@ export default function FAQ({
           ) : (
             <button
               key={cat}
-              className={`${styles.categoryBtn} ${activeCategory === cat ? styles.categoryBtnActive : ""}`}
+              type="button"
+              className={cx(styles.categoryBtn, activeCategory === cat && styles.categoryBtnActive)}
               onClick={() => handleCategoryChange(cat)}
+              aria-pressed={activeCategory === cat}
             >
               {cat}
             </button>
@@ -112,47 +103,39 @@ export default function FAQ({
       </nav>
 
       {showAllLink && (
-        <Link href="/faq" className={styles.headerCta}>
+        <Button href="/faq" variant="ghost" size="sm" className={styles.headerCta}>
           See all {faqs.length} questions
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path
-              d="M3 8H13M13 8L9 4M13 8L9 12"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+        </Button>
       )}
-    </motion.div>
+    </Reveal>
   );
 
   if (expanded) {
     return (
-      <section className={styles.section}>
-        <div className={styles.container}>
-          <div className={styles.layout}>
-            {header}
+      <section className={`pad ${styles.section}`}>
+        <div className={`wide ${styles.layout}`}>
+          {header}
 
-            <div className={styles.list}>
-              {categories.map((cat) => (
-                <div key={cat} id={anchorFor(cat)} className={styles.group}>
-                  <h2 className={styles.groupTitle}>{cat}</h2>
-                  <div className={styles.listInner}>
-                    {faqs
-                      .filter((faq) => faq.category === cat)
-                      .map((faq) => (
-                        <article key={faq.question} className={styles.itemStatic}>
-                          <h3 className={styles.questionStatic}>{faq.question}</h3>
-                          <p className={styles.answerStatic}>{faq.answer}</p>
-                          {faq.link && <AnswerLink link={faq.link} />}
-                        </article>
-                      ))}
-                  </div>
+          <div className={styles.list}>
+            {categories.map((cat, gi) => (
+              <Reveal key={cat} id={anchorFor(cat)} className={styles.group}>
+                <h2 className={styles.groupTitle}>
+                  <span className={styles.groupIndex}>{String(gi + 1).padStart(2, "0")}</span>
+                  {cat}
+                </h2>
+                <div className={styles.listInner}>
+                  {faqs
+                    .filter((faq) => faq.category === cat)
+                    .map((faq) => (
+                      <article key={faq.question} className={styles.itemStatic}>
+                        <h3 className={styles.questionStatic}>{faq.question}</h3>
+                        <p className={styles.answerStatic}>{faq.answer}</p>
+                        {faq.link && <AnswerLink link={faq.link} />}
+                      </article>
+                    ))}
                 </div>
-              ))}
-            </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -160,71 +143,42 @@ export default function FAQ({
   }
 
   return (
-    <section className={styles.section}>
-      <div className={styles.container}>
-        <div className={styles.layout}>
-          {header}
+    <section className={`pad ${styles.section}`}>
+      <div className={`wide ${styles.layout}`}>
+        {header}
 
-          <div className={styles.list}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCategory}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
-                className={styles.listInner}
-              >
-                {filteredFaqs.map((faq, i) => (
-                  <motion.div
-                    key={`${activeCategory}-${i}`}
-                    className={`${styles.item} ${openIndex === i ? styles.itemOpen : ""}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
+        <Reveal delay={1} className={styles.list}>
+          <div key={activeCategory} className={styles.listInner}>
+            {filteredFaqs.map((faq, i) => {
+              const open = openIndex === i;
+              const id = `faq-answer-${anchorFor(activeCategory)}-${i}`;
+              return (
+                <div key={faq.question} className={cx(styles.item, open && styles.itemOpen)} style={{ animationDelay: `${i * 45}ms` }}>
+                  <button
+                    type="button"
+                    className={styles.trigger}
+                    onClick={() => toggle(i)}
+                    aria-expanded={open}
+                    aria-controls={id}
                   >
-                    <button
-                      className={styles.trigger}
-                      onClick={() => toggle(i)}
-                      aria-expanded={openIndex === i}
-                      aria-controls={`faq-answer-${i}`}
-                    >
-                      <span className={styles.question}>{faq.question}</span>
-                      <div
-                        className={`${styles.iconWrapper} ${openIndex === i ? styles.iconOpen : ""}`}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                          <path
-                            d="M8 3V13M3 8H13"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      </div>
-                    </button>
-                    <AnimatePresence>
-                      {openIndex === i && (
-                        <motion.div
-                          id={`faq-answer-${i}`}
-                          role="region"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className={styles.answerWrapper}
-                        >
-                          <p className={styles.answer}>{faq.answer}</p>
-                          {faq.link && <AnswerLink link={faq.link} />}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+                    <span className={styles.question}>{faq.question}</span>
+                    <span className={cx(styles.pip, open && styles.pipOpen)} aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  <div id={id} role="region" className={styles.answerWrap} aria-hidden={!open}>
+                    <div className={styles.answerInner}>
+                      <p className={styles.answer}>{faq.answer}</p>
+                      {faq.link && <AnswerLink link={faq.link} />}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

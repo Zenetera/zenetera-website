@@ -31,6 +31,15 @@ type NativeButtonProps = CommonProps & { href?: undefined } & Omit<
 
 export type ButtonProps = LinkButtonProps | NativeButtonProps;
 
+const CUSTOM_KEYS = ["variant", "size", "arrow", "magnetic", "className", "children"] as const;
+
+/** Returns the native element attributes without the Button-specific props. */
+function stripCustom(props: ButtonProps): Record<string, unknown> {
+  const rest: Record<string, unknown> = { ...props };
+  for (const key of CUSTOM_KEYS) delete rest[key];
+  return rest;
+}
+
 /**
  * Pill button. A coloured layer slides up from underneath on hover and the
  * arrow nudges forward; both are transform-only.
@@ -59,19 +68,19 @@ export default function Button(props: ButtonProps) {
 
   let element: ReactNode;
   if (props.href !== undefined) {
-    const { href, variant: _v, size: _s, arrow: _a, magnetic: _m, className: _c, children: _ch, ...rest } = props;
-    const external = /^https?:\/\//.test(href);
+    const { href, ...rest } = stripCustom(props);
+    const external = /^https?:\/\//.test(href as string);
     element = external ? (
-      <a href={href} className={classes} {...rest}>
+      <a href={href as string} className={classes} {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}>
         {inner}
       </a>
     ) : (
-      <Link href={href} className={classes} {...rest}>
+      <Link href={href as string} className={classes} {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}>
         {inner}
       </Link>
     );
   } else {
-    const { href: _h, variant: _v, size: _s, arrow: _a, magnetic: _m, className: _c, children: _ch, ...rest } = props;
+    const rest = stripCustom(props) as ButtonHTMLAttributes<HTMLButtonElement>;
     element = (
       <button type="button" className={classes} {...rest}>
         {inner}

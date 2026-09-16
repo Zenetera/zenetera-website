@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cx } from "@/lib/cx";
 import styles from "./Card.module.css";
 
-export type CardTone = "accent" | "neutral" | "surface" | "dark" | "glass";
+export type CardTone = "accent" | "accent2" | "neutral" | "surface" | "dark" | "glass";
 
 interface CardProps extends HTMLAttributes<HTMLElement> {
   tone?: CardTone;
