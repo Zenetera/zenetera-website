@@ -172,3 +172,40 @@ Fonts: Inter (body) and Montserrat (display), both variable, loaded through `nex
 4. Services, Products, niche pages, CTA block
 5. About, FAQ, Blog, Work, Pricing
 6. Verification: build, lint, dev server screenshots at 375 / 768 / 1440, reduced-motion pass, Lighthouse
+
+---
+
+## 4. Outcome
+
+### What changed
+- **Global:** `globals.css` now carries the design tokens (Zenetera colours plus one accent tint and two AA shades, fluid type scale, `--pad`/`--section` rhythm, radii, hairlines, `--ease`), the reveal classes, word-rise masks, flair underline and the reduced-motion kill switch. Dark sections use `data-theme="dark"`, which also drives the nav inversion.
+- **Shared components** (`src/components/ui`, `src/motion`): `Button`, `Eyebrow`, `Card`, `FeatureList`, `WordRise`, `Arrow`; `Reveal` (shared IntersectionObserver), `Marquee`, `StickyStack`, `ScrollFill`, `Counter`, `Magnetic`, `MotionPreferences`.
+- **Layout:** sticky nav with blur-on-scroll, dark-zone inversion (IntersectionObserver band, no scroll maths), logo inversion via CSS filter, full-screen mobile menu; dark footer with wire-row columns, newsletter form and the giant outline wordmark.
+- **Home:** hero (kicker, word-rise headline with drawn underline, sub/CTA row, curtain-unveiled media panel with parallax and spinning badge), accent marquee, tinted industry cards with a scroll-fill lede, numbered service rows with a cursor-following illustration preview (desktop) or inline illustration (smaller screens), testimonial marquee rows in a dark zone, sticky-stack process, hairline FAQ accordion, dark contact zone with the same Formspree form.
+- **Inner pages:** `PageHero`, `SplitFeature` and `CtaBlock` power Services, Products, the three industry pages, Work and Pricing; About gets a scroll-fill story heading, counter stats, glass value cards and numbered approach rows; Blog index and post are restyled with the same tokens; a `PricingTable` component backs both pricing grids.
+- **Removed:** `Industries`, `TrustStrip`, `WhatYouGain`, `ContactForm` and `ui/Button` (old) were not imported by any page and referenced images that do not exist.
+
+### Copy adjustments (all flagged)
+1. "Design. Develop. Automate. Grow." moved from under the home headline to the kicker above it.
+2. The site meta description is shown as the home hero sub-line (delete one `<p>` in `Hero.tsx` to remove it).
+3. The marquee strip and hero badge reuse existing labels only (service categories, industry names, the IT / AI / B2B words from the logo).
+4. Process steps are a scroll stack instead of tabs; every step, title and deliverable is unchanged.
+5. Literal "→" glyphs in "See Products →" / "Book a free audit →" are now the button's arrow icon.
+6. The contact section eyebrow reads "Contact" (the nav label for that section).
+
+### Dependencies
+None added. `framer-motion` and `styled-components` are no longer imported anywhere and can be removed from `package.json` when convenient. Fonts are unchanged (Inter + Montserrat); suggested but **not applied**: a mono face for eyebrow labels and a serif italic for flair words, which would bring the reference's three-family typography.
+
+### Not matched from the reference, and why
+- Serif-italic flair words and mono labels: font change, needs your approval.
+- The animated UK map and the estate "feed" rows: no equivalent Zenetera content.
+- The reference's single large pull quote: Zenetera has ten equal testimonials, so they became marquee rows rather than promoting one.
+- The clip-path media unveil is done with a sliding curtain (transform only) to honour the transform/opacity rule.
+- The FAQ accordion animates `grid-template-rows` for its height; it is the one non-transform animation, contained to a single item on click.
+
+### Verification
+- `next build` (63 pages), `tsc --noEmit` and `next lint` pass.
+- Every page captured at 375 / 768 / 1440 in headless Chrome with device emulation; no horizontal overflow on any page.
+- Reduced-motion pass: all content visible, marquee static, no preview or stack scaling.
+- Lighthouse (mobile, two runs): home 75–76 perf / 100 a11y / 96 best practices / 100 SEO, against 74–75 / 95 / 92 / 100 for the original. Services 95, About 96, Blog 90, FAQ 78 (long page, large hero text).
+- Pre-existing issues left as found: pricing CTAs link to `/contact` (no such route); `/apple-touch-icon.png` is referenced but missing (console 404 on both sites).
