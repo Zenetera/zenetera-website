@@ -4,7 +4,7 @@ import WordRise from "@/components/ui/WordRise";
 import styles from "./PageHero.module.css";
 
 interface PageHeroProps {
-  /** Small label above the headline (rendered with a pulsing dot). */
+  /** Small label above the headline. */
   eyebrow?: string;
   heading: string;
   /** Phrase in `heading` to render as accent flair. */
@@ -16,6 +16,8 @@ interface PageHeroProps {
   dark?: boolean;
   /** Narrower headline for long-form pages. */
   size?: "lg" | "md";
+  /** Container width, to line up with the page body below. */
+  width?: "wide" | "contain";
   /** CTAs, rendered in the row beside the sub-line. */
   children?: ReactNode;
   className?: string;
@@ -30,6 +32,7 @@ export default function PageHero({
   price,
   dark = false,
   size = "lg",
+  width = "wide",
   children,
   className,
 }: PageHeroProps) {
@@ -37,13 +40,8 @@ export default function PageHero({
 
   return (
     <section className={cx(styles.hero, dark && styles.dark, className)} data-theme={dark ? "dark" : undefined}>
-      <div className="pad wide">
-        {eyebrow && (
-          <p className={styles.kicker}>
-            <i className="pulse" aria-hidden="true" />
-            {eyebrow}
-          </p>
-        )}
+      <div className={`pad ${width}`}>
+        {eyebrow && <p className={styles.kicker}>{eyebrow}</p>}
 
         <WordRise as="h1" className={cx(styles.heading, size === "md" && styles.headingMd)} text={heading} flair={flair} />
 

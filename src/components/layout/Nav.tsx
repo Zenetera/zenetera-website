@@ -11,6 +11,7 @@ import styles from "./Nav.module.css";
 const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/products", label: "Products" },
+  { href: "/work", label: "Work" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
 ];
@@ -106,7 +107,12 @@ export default function Nav() {
   return (
     <header
       ref={headerRef}
-      className={cx(styles.header, scrolled && styles.scrolled, (onDark || menuOpen) && styles.onDark)}
+      className={cx(
+        styles.header,
+        scrolled && styles.scrolled,
+        (onDark || menuOpen) && styles.onDark,
+        menuOpen && styles.open,
+      )}
     >
       <span className={styles.pillbg} aria-hidden="true" />
 

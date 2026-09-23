@@ -16,18 +16,22 @@ export function generateMetadata({ params }: Props) {
   if (!study) return {};
 
   return buildMetadata({
-    title: study.title,
-    description: `Case study: ${study.title} — a project delivered for ${study.client}.`,
+    title: `${study.client}: ${study.title}`,
+    description: study.summary,
     path: `/work/${study.slug}`,
+    image: study.cover?.src,
   });
 }
 
 export default function CaseStudyPage({ params }: Props) {
-  const study = caseStudies.find((s) => s.slug === params.slug);
+  const index = caseStudies.findIndex((s) => s.slug === params.slug);
 
-  if (!study) {
+  if (index === -1) {
     notFound();
   }
 
-  return <CaseStudy study={study} />;
+  const study = caseStudies[index];
+  const next = caseStudies.length > 1 ? caseStudies[(index + 1) % caseStudies.length] : undefined;
+
+  return <CaseStudy study={study} next={next} />;
 }

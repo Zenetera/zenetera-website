@@ -48,6 +48,13 @@ export default function NicheSplit() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal as="p" delay={3} className={styles.more}>
+          Plus restaurants, gyms, trades, clinics and plenty more.{" "}
+          <Link href="/#contact" className={styles.moreLink}>
+            Tell us about yours
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

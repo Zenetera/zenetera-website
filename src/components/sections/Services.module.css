@@ -40,12 +40,33 @@
 }
 
 .rowLink {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: 84px 1.15fr 1fr 70px;
   gap: var(--gap);
   align-items: center;
   padding: clamp(28px, 4.5vh, 48px) 0;
   --acc: var(--color-accent);
+}
+
+/* Accent panel wiping in from the left. It bleeds past the container by the
+   page gutter so the fill runs to the screen edges while the hairlines and the
+   type stay on the grid. Negative z-index keeps it under the row's content;
+   `isolation` stops it dropping behind the section background. */
+.rowLink::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(-1 * var(--pad));
+  z-index: -1;
+  background: var(--acc);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.55s var(--ease);
+}
+
+.row:is(:hover, :focus-within) .rowLink::before {
+  transform: scaleX(1);
 }
 
 .rowLink:focus-visible {
@@ -73,6 +94,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-text-muted);
+  transition: color 0.3s ease;
 }
 
 .title {
@@ -91,6 +113,7 @@
   font-size: var(--fs-body);
   color: var(--color-text-secondary);
   max-width: 42ch;
+  transition: color 0.3s ease;
 }
 
 .pip {
@@ -110,101 +133,27 @@
     border-color 0.3s ease;
 }
 
-.row:hover .title,
-.rowLink:focus-visible .title {
-  transform: translateX(16px);
-  color: var(--acc);
-}
-
-.row:hover .num {
-  color: var(--acc);
-}
-
-.row:hover .pip,
-.rowLink:focus-visible .pip {
-  background: var(--acc);
-  border-color: var(--acc);
+/* Everything on the filled row goes solid white: #ffffff on the accent clears
+   4.6:1, tinted whites do not. */
+.row:is(:hover, :focus-within) .num,
+.row:is(:hover, :focus-within) .category,
+.row:is(:hover, :focus-within) .desc {
   color: #ffffff;
+}
+
+.row:is(:hover, :focus-within) .title {
+  transform: translateX(16px);
+  color: #ffffff;
+}
+
+.row:is(:hover, :focus-within) .pip {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--acc);
   transform: rotate(-45deg);
 }
 
-/* Illustration shown inside the row on smaller screens */
-.inlineArt {
-  display: none;
-  grid-column: 2 / -1;
-  width: 100%;
-  max-width: 360px;
-  aspect-ratio: 4 / 3;
-  border-radius: 16px;
-  overflow: hidden;
-  margin: 0 0 clamp(24px, 4vh, 40px);
-  background: #111111;
-}
-
-/* ── Cursor-following preview ─────────────────────── */
-.preview {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 300px;
-  z-index: 6;
-  pointer-events: none;
-  border-radius: 20px;
-  overflow: hidden;
-  background: #111111;
-  box-shadow: var(--shadow-float);
-  opacity: 0;
-  will-change: transform;
-}
-
-.preview::before {
-  /* separate layer so the scale/rotate entrance doesn't fight the follow transform */
-  content: "";
-}
-
-.pvHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: var(--color-accent-tint);
-  color: var(--color-text);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.pvBody {
-  aspect-ratio: 4 / 3;
-  transform: scale(0.9) rotate(-3deg);
-  transform-origin: center;
-  transition: transform 0.45s var(--ease);
-}
-
-.preview {
-  transition: opacity 0.35s var(--ease);
-}
-
-.previewShow {
-  opacity: 1;
-}
-
-.previewShow .pvBody {
-  transform: scale(1) rotate(0deg);
-}
-
 /* ── Responsive ───────────────────────────────────── */
-@media (max-width: 1100px) {
-  .preview {
-    display: none;
-  }
-
-  .inlineArt {
-    display: block;
-  }
-}
-
 @media (max-width: 1000px) {
   .head {
     grid-template-columns: 1fr;
@@ -231,7 +180,14 @@
     display: none;
   }
 
-  .row:hover .title {
+  .row:is(:hover, :focus-within) .title {
     transform: none;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .rowLink::before {
+    transition: none;
+  }
+}
+

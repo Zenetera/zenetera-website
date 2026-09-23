@@ -133,6 +133,16 @@
   z-index: 2;
 }
 
+/* Repeats the Button's own transitions, plus the fade used when the menu
+   opens (see Responsive). Visibility flips at once on the way back in. */
+.nav .cta {
+  transition:
+    color 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    opacity 0.3s var(--ease),
+    visibility 0s;
+}
+
 /* ── Hamburger ────────────────────────────────────── */
 .menuButton {
   display: none;
@@ -265,6 +275,16 @@
 
   .wordmark {
     width: 128px;
+  }
+
+  /* The open menu ends on its own Contact button, so the bar's pill steps
+     aside. It keeps its box, so the menu button doesn't shift. */
+  .open .nav .cta {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s var(--ease),
+      visibility 0s linear 0.3s;
   }
 }
 

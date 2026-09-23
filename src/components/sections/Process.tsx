@@ -94,7 +94,7 @@ export default function Process() {
     <section id="how-it-works" className={`pad ${styles.section}`}>
       <div className="wide">
         <Reveal>
-          <Eyebrow index="04">Our process</Eyebrow>
+          <Eyebrow index="05">Our process</Eyebrow>
         </Reveal>
 
         <div className={styles.head}>

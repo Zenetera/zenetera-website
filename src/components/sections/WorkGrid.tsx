@@ -1,55 +1,46 @@
-import Link from "next/link";
-import { caseStudies } from "@/content/work";
-import Arrow from "@/components/ui/Arrow";
-import Card, { type CardTone } from "@/components/ui/Card";
+import type { CaseStudy } from "@/lib/types";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/motion/Reveal";
+import WorkCard from "./WorkCard";
 import styles from "./WorkGrid.module.css";
 
-const tones: CardTone[] = ["accent", "neutral", "dark"];
+interface WorkGridProps {
+  studies: CaseStudy[];
+}
 
-const initials = (name: string) =>
-  name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("");
+/** The /work index: the featured project as a wide lead card, then the rest three-up. */
+export default function WorkGrid({ studies }: WorkGridProps) {
+  const lead = studies.find((study) => study.featured) ?? studies[0];
+  const rest = studies.filter((study) => study !== lead);
 
-export default function WorkGrid() {
   return (
     <section className={`pad ${styles.section}`}>
       <div className="wide">
         <Reveal>
-          <Eyebrow index="01">Selected Work</Eyebrow>
+          <Eyebrow index="01">Selected work</Eyebrow>
         </Reveal>
 
-        <div className={styles.grid}>
-          {caseStudies.map((study, i) => (
-            <Reveal key={study.slug} delay={i as 0 | 1 | 2} className={styles.cell}>
-              <Link href={`/work/${study.slug}`} className={styles.cardLink}>
-                <Card as="article" tone={tones[i % tones.length]} shape className={styles.card}>
-                  <span className={styles.mark} aria-hidden="true">
-                    {initials(study.client)}
-                  </span>
-                  <span className={styles.client}>{study.client}</span>
-                  <h2 className={styles.title}>{study.title}</h2>
-                  <ul className={styles.tags}>
-                    {study.tags.map((tag) => (
-                      <li key={tag} className={styles.tag}>
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                  <span className={styles.more}>
-                    View case study
-                    <Arrow size={14} className={styles.moreArrow} />
-                  </span>
-                </Card>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+        {!lead && (
+          <Reveal as="p" className={styles.empty}>
+            Case studies are on their way.
+          </Reveal>
+        )}
+
+        {lead && (
+          <Reveal className={styles.leadWrap}>
+            <WorkCard study={lead} variant="lead" headingLevel="h2" priority />
+          </Reveal>
+        )}
+
+        {rest.length > 0 && (
+          <div className={styles.grid}>
+            {rest.map((study, i) => (
+              <Reveal key={study.slug} delay={(i % 3) as 0 | 1 | 2} className={styles.cell}>
+                <WorkCard study={study} headingLevel="h2" />
+              </Reveal>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

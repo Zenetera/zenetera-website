@@ -1,6 +1,7 @@
 .section {
   padding-top: var(--section);
-  padding-bottom: var(--section);
+  /* The "plus more" line closes the section, so it needs less room under it. */
+  padding-bottom: var(--section-sm);
   background: var(--color-bg);
 }
 
@@ -128,6 +129,26 @@
 
 :global(.tone-dark) .note i {
   background: var(--color-accent-light);
+}
+
+/* ── "Plus more" line ─────────────────────────────── */
+.more {
+  margin-top: clamp(20px, 3vh, 32px);
+  font-size: var(--fs-body);
+  color: var(--fg-soft);
+}
+
+.moreLink {
+  color: var(--fg);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--hairline-strong);
+  transition: text-decoration-color var(--transition);
+}
+
+.moreLink:hover {
+  text-decoration-color: var(--color-accent);
 }
 
 /* ── Responsive ───────────────────────────────────── */

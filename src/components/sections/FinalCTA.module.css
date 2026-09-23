@@ -1,7 +1,8 @@
 .section {
   position: relative;
   padding-top: var(--section);
-  padding-bottom: var(--section);
+  /* Extra room for the footer, which overlaps this block by the zone radius. */
+  padding-bottom: calc(var(--section) + var(--radius-zone));
   overflow: hidden;
 }
 

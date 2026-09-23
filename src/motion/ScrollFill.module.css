@@ -19,10 +19,23 @@
   opacity: 1;
 }
 
+/* Same drifting gradient as the headline `.flair` (see globals.css). */
 .accent.on {
-  color: var(--color-accent);
+  background: var(--gradient-flair);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shift 4s ease-in-out infinite;
+  animation-delay: calc(var(--fi, 0) * -0.7s);
 }
 
-[data-theme="dark"] .accent.on {
-  color: var(--color-accent-light);
+@keyframes shift {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
 }

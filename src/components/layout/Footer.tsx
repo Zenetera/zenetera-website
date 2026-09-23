@@ -12,6 +12,7 @@ const serviceLinks = [
 
 const companyLinks = [
   { href: "/about", label: "About" },
+  { href: "/work", label: "Work" },
   { href: "/blog", label: "Blog" },
   { href: "/products", label: "Products" },
   { href: "/#contact", label: "Contact" },
@@ -42,7 +43,7 @@ function LinkColumn({ title, links }: { title: string; links: { href: string; la
 
 export default function Footer() {
   return (
-    <footer className={styles.footer} data-theme="dark">
+    <footer className={`${styles.footer} zone-top`} data-theme="dark">
       <div className={styles.container}>
         <div className={styles.grid}>
           <LinkColumn title="Services" links={serviceLinks} />
@@ -68,8 +69,24 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Drawn as SVG so the wordmark spans the footer exactly at every width.
+            As HTML text it was sized in vw and ran past the container, which
+            clipped the last letter. `textLength` pins the word to the box and
+            `lengthAdjust="spacing"` absorbs the difference in the gaps, so the
+            letterforms themselves are never distorted. */}
         <div className={styles.giant} aria-hidden="true">
-          <span>ZENETERA</span>
+          <svg viewBox="0 0 1000 116" preserveAspectRatio="xMidYMid meet" className={styles.giantMark}>
+            <text
+              x="0"
+              y="116"
+              textLength="1000"
+              lengthAdjust="spacing"
+              vectorEffect="non-scaling-stroke"
+              paintOrder="stroke"
+            >
+              ZENETERA
+            </text>
+          </svg>
         </div>
 
         <div className={styles.bottom}>

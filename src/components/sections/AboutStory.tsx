@@ -2,14 +2,8 @@ import Eyebrow from "@/components/ui/Eyebrow";
 import Counter from "@/motion/Counter";
 import Reveal from "@/motion/Reveal";
 import ScrollFill from "@/motion/ScrollFill";
+import { STUDIO_STATS as stats } from "@/content/stats";
 import styles from "./AboutStory.module.css";
-
-const stats = [
-  { value: "50+", label: "UK businesses launched" },
-  { value: "96%", label: "client retention" },
-  { value: "2×", label: "average lead uplift" },
-  { value: "< 1 day", label: "response to every enquiry" },
-];
 
 export default function AboutStory() {
   return (

@@ -2,6 +2,7 @@ import { buildMetadata } from "@/lib/metadata";
 import Hero from "@/components/sections/Hero";
 import NicheSplit from "@/components/sections/NicheSplit";
 import Services from "@/components/sections/Services";
+import SelectedWork from "@/components/sections/SelectedWork";
 import Testimonials from "@/components/sections/Testimonials";
 import Process from "@/components/sections/Process";
 import FAQ from "@/components/sections/FAQ";
@@ -21,6 +22,7 @@ export default function HomePage() {
       <Hero />
       <NicheSplit />
       <Services />
+      <SelectedWork />
       <Testimonials />
       <Process />
       <FAQ categories={HOME_FAQ_CATEGORIES} showAllLink />

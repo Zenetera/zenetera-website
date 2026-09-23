@@ -13,10 +13,6 @@
 }
 
 .kicker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
   margin-bottom: clamp(24px, 3.5vh, 40px);
   font-size: var(--fs-eyebrow);
   font-weight: 600;
@@ -25,14 +21,6 @@
   color: var(--fg-soft);
   opacity: 0;
   animation: fadeUp 0.8s 0.1s var(--ease) forwards;
-}
-
-.kicker i {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  flex: none;
 }
 
 .heading {

@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 interface WordRiseProps {
   /** Heading text. Use "\n" to force a line break. */
   text: string;
-  /** Phrase inside `text` rendered as an accent "flair" with a drawn underline. */
+  /** Phrase inside `text` rendered as an accent "flair" in the drifting gradient. */
   flair?: string;
   as?: "h1" | "h2" | "h3" | "p" | "span";
   className?: string;
@@ -16,14 +16,6 @@ interface WordRiseProps {
 
 const PUNCT = /^(.*?)([.,!?:;]*)$/;
 const norm = (w: string) => w.replace(/[^\w’']/g, "").toLowerCase();
-
-function Underline() {
-  return (
-    <svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M3 8 Q 30 3, 55 7 T 97 6" pathLength={1} />
-    </svg>
-  );
-}
 
 /**
  * Splits a heading into words. With `animate`, each word sits inside an
@@ -63,9 +55,8 @@ export default function WordRise({
       const [, core = word, punct = ""] = PUNCT.exec(word) ?? [];
       const content = isFlair ? (
         <>
-          <em className="flair">
+          <em className="flair" style={{ "--fi": i - flairStart } as CSSProperties}>
             {core}
-            <Underline />
           </em>
           {punct}
         </>

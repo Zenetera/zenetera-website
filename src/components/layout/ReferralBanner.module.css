@@ -20,14 +20,6 @@
   background: var(--color-bg-dark-2);
 }
 
-.dot {
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-accent);
-}
-
 .text {
   line-height: 1.4;
 }

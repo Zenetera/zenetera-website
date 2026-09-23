@@ -13,7 +13,6 @@ export default function ReferralBanner() {
 
   return (
     <Link href="/#contact" className={styles.banner}>
-      <i className={`${styles.dot} pulse`} aria-hidden="true" />
       <span className={styles.text}>
         Refer a business and earn a <span className={styles.highlight}>10% referral bonus</span>
       </span>

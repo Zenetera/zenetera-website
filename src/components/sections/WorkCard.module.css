@@ -1,0 +1,177 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-bg-card);
+  box-shadow:
+    inset 0 0 0 1px var(--hair),
+    var(--shadow-card);
+  transition: transform 0.45s var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* ── Cover ────────────────────────────────────────── */
+.media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--color-bg-alt);
+}
+
+.media > * {
+  transition: transform 0.8s var(--ease);
+}
+
+.card:hover .media > * {
+  transform: scale(1.035);
+}
+
+/* ── Copy ─────────────────────────────────────────── */
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: clamp(20px, 2.4vw, 32px);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.client {
+  color: var(--accent-fg);
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.title {
+  font-size: var(--fs-h3-card);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--fg);
+  max-width: 20ch;
+  margin-bottom: 18px;
+}
+
+.summary {
+  display: block;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--fg-soft);
+  max-width: 46ch;
+  margin-bottom: 22px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.tag {
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 1.2px var(--hairline-strong);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
+
+.more {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+.moreArrow {
+  transition: transform 0.3s var(--ease);
+}
+
+.card:hover .moreArrow {
+  transform: translateX(4px) rotate(-45deg);
+}
+
+/* ── Lead: cover beside the copy ──────────────────── */
+/* Sized from the card's own width (cqi), not the viewport's, so the copy
+   never grows taller than the cover and forces it to crop, whether the card
+   sits in the wide /work grid or the narrower case-study column. */
+.lead {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  container-type: inline-size;
+}
+
+.lead .media {
+  display: flex;
+}
+
+.lead .media > * {
+  aspect-ratio: auto;
+  min-height: clamp(280px, 30cqi, 480px);
+}
+
+.lead .body {
+  padding: clamp(24px, 3.4cqi, 56px);
+  justify-content: center;
+}
+
+.lead .title {
+  font-size: clamp(1.375rem, 2.6cqi, 2.625rem);
+  line-height: 1.02;
+  max-width: 16ch;
+}
+
+@media (max-width: 900px) {
+  .lead {
+    grid-template-columns: 1fr;
+  }
+
+  .lead .media > * {
+    aspect-ratio: 16 / 10;
+    min-height: 0;
+  }
+
+  .lead .body {
+    padding: clamp(20px, 2.4vw, 32px);
+  }
+
+  .lead .title {
+    font-size: var(--fs-h3-card);
+  }
+}

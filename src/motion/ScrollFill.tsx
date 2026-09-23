@@ -1,13 +1,13 @@
 "use client";
 
-import { createElement, useEffect, useRef } from "react";
+import { createElement, useEffect, useRef, type CSSProperties } from "react";
 import { cx } from "@/lib/cx";
 import { prefersReducedMotion } from "./useReducedMotion";
 import styles from "./ScrollFill.module.css";
 
 interface ScrollFillProps {
   text: string;
-  /** Phrase inside `text` to colour with the accent once revealed. */
+  /** Phrase inside `text` to paint with the flair gradient once revealed. */
   highlight?: string;
   as?: "p" | "h2" | "h3" | "blockquote";
   className?: string;
@@ -72,15 +72,19 @@ export default function ScrollFill({ text, highlight, as = "p", className, id }:
   return createElement(
     as,
     { ref, id, className: cx(styles.text, className) },
-    words.map((w, i) => (
-      <span
-        key={i}
-        data-word=""
-        className={cx(styles.word, start >= 0 && i >= start && i < start + hl.length && styles.accent)}
-      >
-        {w}
-        {i < words.length - 1 ? " " : ""}
-      </span>
-    )),
+    words.map((w, i) => {
+      const isAccent = start >= 0 && i >= start && i < start + hl.length;
+      return (
+        <span
+          key={i}
+          data-word=""
+          className={cx(styles.word, isAccent && styles.accent)}
+          style={isAccent ? ({ "--fi": i - start } as CSSProperties) : undefined}
+        >
+          {w}
+          {i < words.length - 1 ? " " : ""}
+        </span>
+      );
+    }),
   );
 }

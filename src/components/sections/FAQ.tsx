@@ -29,6 +29,8 @@ interface FAQProps {
   index?: string;
 }
 
+const countFor = (category: FaqCategory) => faqs.filter((faq) => faq.category === category).length;
+
 const anchorFor = (category: string) =>
   category
     .toLowerCase()
@@ -83,27 +85,47 @@ export default function FAQ({
       </p>
 
       <nav className={styles.categoryNav} aria-label="FAQ categories">
-        {categories.map((cat) =>
-          expanded ? (
-            <a key={cat} href={`#${anchorFor(cat)}`} className={styles.categoryBtn}>
-              {cat}
+        {categories.map((cat, i) => {
+          const body = (
+            <>
+              <span className={styles.catIndex} aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className={styles.catLabel}>{cat}</span>
+              <span className={styles.catCount}>
+                {countFor(cat)}
+                <span className="sr-only"> questions</span>
+              </span>
+            </>
+          );
+
+          return expanded ? (
+            <a key={cat} href={`#${anchorFor(cat)}`} className={styles.catItem}>
+              {body}
             </a>
           ) : (
             <button
               key={cat}
               type="button"
-              className={cx(styles.categoryBtn, activeCategory === cat && styles.categoryBtnActive)}
+              className={cx(styles.catItem, activeCategory === cat && styles.catItemActive)}
               onClick={() => handleCategoryChange(cat)}
               aria-pressed={activeCategory === cat}
             >
-              {cat}
+              {body}
             </button>
-          ),
-        )}
+          );
+        })}
       </nav>
 
+      {/* On the accordion layout this copy is repeated under the questions for
+          narrow screens, where the header is no longer beside them. */}
       {showAllLink && (
-        <Button href="/faq" variant="ghost" size="sm" className={styles.headerCta}>
+        <Button
+          href="/faq"
+          variant="ghost"
+          size="sm"
+          className={cx(styles.headerCta, !expanded && styles.headerCtaWide)}
+        >
           See all {faqs.length} questions
         </Button>
       )}
@@ -182,6 +204,14 @@ export default function FAQ({
             })}
           </div>
         </Reveal>
+
+        {showAllLink && (
+          <div className={styles.listCta}>
+            <Button href="/faq" variant="ghost" size="sm">
+              See all {faqs.length} questions
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -38,47 +38,100 @@
   max-width: 38ch;
 }
 
-/* ── Category pills ───────────────────────────────── */
+/* ── Category index ───────────────────────────────── */
+/* An index rather than a row of pills: the category names run long ("Trades &
+   Professional Services"), which pills wrap badly. Capped at ~2 columns so the
+   list stays a block instead of one long strip on the wide breakpoints. */
 .categoryNav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: clamp(20px, 2.5vw, 40px);
+  max-width: 660px;
   margin-bottom: 28px;
+  border-top: 1px solid var(--hairline);
 }
 
-.categoryBtn {
-  display: inline-flex;
-  align-items: center;
-  padding: 9px 16px;
-  border-radius: var(--radius-full);
-  box-shadow: inset 0 0 0 1.2px var(--hairline-strong);
-  font-size: 0.8125rem;
-  font-weight: 600;
+/* Two columns once there is room. Explicit tracks rather than auto-fill: with a
+   max-width, auto-fill sizes its repetitions against that max-width, which
+   makes the nav's min-content 660px and blows the phone layout open. */
+@media (min-width: 620px) {
+  .categoryNav {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.catItem {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--hairline);
   color: var(--color-text-secondary);
-  background: transparent;
   cursor: pointer;
   transition:
     color 0.2s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.3s var(--ease);
+    border-color 0.25s ease;
 }
 
-.categoryBtn:hover {
+.catIndex {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+.catLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: inherit;
+  transition: transform 0.3s var(--ease);
+}
+
+.catCount {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+.catItem:hover {
   color: var(--color-text);
-  box-shadow: inset 0 0 0 1.2px var(--color-text);
-  transform: translateY(-1px);
 }
 
-.categoryBtnActive,
-.categoryBtnActive:hover {
-  background: var(--color-text);
-  color: #ffffff;
-  box-shadow: inset 0 0 0 1.2px var(--color-text);
+.catItem:hover .catLabel {
+  transform: translateX(4px);
+}
+
+.catItem:hover .catIndex {
+  color: var(--color-text);
+}
+
+.catItemActive,
+.catItemActive:hover {
+  color: var(--accent-fg);
+  border-bottom-color: var(--color-accent);
+}
+
+.catItemActive .catIndex,
+.catItemActive:hover .catIndex,
+.catItemActive .catCount {
+  color: var(--accent-fg);
 }
 
 .headerCta {
   margin-top: 4px;
+}
+
+/* Narrow layouts show the copy under the questions instead (see .listCta). */
+.listCta {
+  display: none;
 }
 
 /* ── Accordion list ───────────────────────────────── */
@@ -276,6 +329,15 @@
   .heading {
     max-width: none;
   }
+
+  .headerCtaWide {
+    display: none;
+  }
+
+  .listCta {
+    display: flex;
+    margin-top: 28px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -285,7 +347,8 @@
 
   .answerWrap,
   .answerInner,
-  .pip {
+  .pip,
+  .catLabel {
     transition: none;
   }
 }

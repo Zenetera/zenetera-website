@@ -13,6 +13,7 @@
   --color-bg: #fafafa;
   --color-bg-alt: #f0f0f0;
   --color-bg-hero: #f5f5f7;
+  --color-bg-hero-rgb: 245, 245, 247; /* same colour, for the hero's fade-outs */
   --color-bg-dark: #0a0a0a;
   --color-bg-dark-2: #141414;
   --color-bg-card: #ffffff;
@@ -27,6 +28,9 @@
   --color-accent-tint: #FBE9E6; /* tint of the accent, used as a card fill */
   --color-accent-tint-2: #F6D2CC;
   --color-accent-glow: rgba(214, 59, 49, 0.15);
+  /* Headline flair, carried over from the original site: violet → accent →
+     coral → peach, drawn at 200% so the drift has somewhere to go. */
+  --gradient-flair: linear-gradient(135deg, #7b5ea7 0%, #D63B31 30%, #E87561 50%, #f7a06b 70%, #7b5ea7 100%);
   --color-label: #D63B31;
   --color-border: #e2e2e2;
   --color-border-light: #efefef;
@@ -98,8 +102,8 @@
   /* Rhythm */
   --nav-h: 68px;
   --pad: clamp(20px, 4.5vw, 64px);
-  --section: clamp(96px, 13vh, 168px);
-  --section-sm: clamp(64px, 9vh, 112px);
+  --section: clamp(68px, 9.5vh, 124px);
+  --section-sm: clamp(48px, 6.5vh, 84px);
   --gap: clamp(16px, 3vw, 48px);
   --eyebrow-gap: clamp(28px, 5vh, 56px);
   --max-width: 1200px;
@@ -293,6 +297,14 @@ button {
   margin-right: auto;
 }
 
+/* Long-form pages (case studies): a column the 1600px screenshots can fill
+   without being upscaled. */
+.contain {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .section {
   padding-top: var(--section);
   padding-bottom: var(--section);
@@ -312,58 +324,29 @@ button {
   line-height: 0.98;
 }
 
+/* Each flair word is its own element (WordRise splits per word), so `--fi`
+   (the word's place in the phrase) staggers the drift: the colour runs across
+   the phrase instead of repeating on every word. */
 .flair {
-  color: var(--color-accent);
   font-style: normal;
-  position: relative;
   white-space: nowrap;
+  background: var(--gradient-flair);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: flairShift 4s ease-in-out infinite;
+  animation-delay: calc(var(--fi, 0) * -0.7s);
 }
 
-[data-theme="dark"] .flair {
-  color: var(--color-accent-light);
-}
-
-.flair svg {
-  position: absolute;
-  left: 1%;
-  bottom: -0.06em;
-  width: 98%;
-  height: 0.16em;
-  overflow: visible;
-  pointer-events: none;
-}
-
-/* The path is normalised to length 1 (pathLength="1"), so a dash of 1 draws
-   the full stroke as the offset runs 1 → 0. The stroke scales with the
-   stretched viewBox, which keeps Chrome's dash maths reliable. */
-.flair path {
-  stroke: var(--color-accent);
-  stroke-width: 6;
-  fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 1;
-  animation: drawline 0.9s 1.3s var(--ease) forwards;
-}
-
-[data-theme="dark"] .flair path {
-  stroke: var(--color-accent-light);
-}
-
-@keyframes drawline {
-  to {
-    stroke-dashoffset: 0;
+@keyframes flairShift {
+  0%,
+  100% {
+    background-position: 0% center;
   }
-}
-
-/* Flair underlines inside a scroll-reveal wait until the reveal fires. */
-.reveal .flair path {
-  animation-delay: 0.45s;
-  animation-play-state: paused;
-}
-
-.reveal.in .flair path {
-  animation-play-state: running;
+  50% {
+    background-position: 100% center;
+  }
 }
 
 /* Word-rise headline masks */
@@ -371,13 +354,13 @@ button {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
 }
 
 .w > span {
   display: inline-block;
-  transform: translateY(118%) rotate(3deg);
+  transform: translateY(130%) rotate(3deg);
   animation: wordUp 0.9s var(--ease) forwards;
   animation-delay: calc(var(--i, 0) * 70ms + 150ms);
 }
@@ -399,24 +382,10 @@ button {
   }
 }
 
-@keyframes pulseDot {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
-}
-
-.pulse {
-  animation: pulseDot 2s ease-in-out infinite;
 }
 
 /* ── Scroll reveal ─────────────────────────────────── */
@@ -479,8 +448,7 @@ button {
     animation: none;
   }
 
-  .flair path {
-    stroke-dashoffset: 0;
+  .flair {
     animation: none;
   }
 
@@ -488,9 +456,5 @@ button {
     opacity: 1;
     transform: none;
     transition: none;
-  }
-
-  .pulse {
-    animation: none;
   }
 }

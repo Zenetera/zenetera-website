@@ -7,7 +7,19 @@ import WordRise from "@/components/ui/WordRise";
 import Reveal from "@/motion/Reveal";
 import styles from "./FinalCTA.module.css";
 
-const SERVICES = ["Web Design", "E-commerce", "Branding", "Development", "Automation", "AI", "Chatbots", "Other"] as const;
+const SERVICES = [
+  "Web Design",
+  "E-commerce",
+  "Branding",
+  "Development",
+  "Automation",
+  "AI",
+  "Chatbots",
+  /* The referral banner points here, so the offer it advertises needs a
+     matching option to land on. */
+  "Referral",
+  "Other",
+] as const;
 
 interface FinalCTAProps {
   /** Section index shown in the eyebrow pill. */
@@ -122,7 +134,7 @@ export default function FinalCTA({ index = "06" }: FinalCTAProps) {
               </div>
 
               <fieldset className={styles.fieldset}>
-                <legend className={styles.legend}>Which main service are you interested in?</legend>
+                <legend className={styles.legend}>Which area are you interested in?</legend>
                 <div className={styles.options}>
                   {SERVICES.map((service) => (
                     <label key={service} className={styles.option}>
