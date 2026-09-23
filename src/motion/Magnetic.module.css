@@ -1,0 +1,9 @@
+.magnet {
+  display: inline-block;
+  transition: transform 0.4s var(--ease);
+  will-change: transform;
+}
+
+.active {
+  transition-duration: 0.08s;
+}

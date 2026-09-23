@@ -1,7 +1,8 @@
-"use client";
-
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Fragment } from "react";
+import Card, { type CardTone } from "@/components/ui/Card";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Reveal from "@/motion/Reveal";
+import StickyStack from "@/motion/StickyStack";
 import styles from "./Process.module.css";
 
 const steps = [
@@ -72,124 +73,63 @@ const steps = [
   },
 ];
 
-const deliverableIcons = [
-  // Clipboard/questionnaire
-  <svg key="icon-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="4" rx="1" /><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" /><path d="M9 14l2 2 4-4" /></svg>,
-  // Monitor/UX
-  <svg key="icon-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>,
-  // Pen/design
-  <svg key="icon-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>,
-  // Users/revisions
-  <svg key="icon-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
-  // Layout/template
-  <svg key="icon-4" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /><path d="M9 21V9" /></svg>,
-];
+const tones: CardTone[] = ["accent", "neutral", "surface", "accent2", "dark"];
+
+function MultiLine({ text }: { text: string }) {
+  const lines = text.split("\n");
+  return (
+    <>
+      {lines.map((line, i) => (
+        <Fragment key={i}>
+          {line}
+          {i < lines.length - 1 && <br />}
+        </Fragment>
+      ))}
+    </>
+  );
+}
 
 export default function Process() {
-  const [active, setActive] = useState(0);
-
-  const goTo = (index: number) => {
-    if (index >= 0 && index < steps.length) setActive(index);
-  };
-
-  const current = steps[active];
-
   return (
-    <section id="how-it-works" className={styles.section}>
-      <div className={styles.container}>
-        {/* Header */}
-        <motion.div
-          className={styles.header}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className={styles.label}>Our process</span>
-          <h2 className={styles.heading}>Your Website journey</h2>
-          <p className={styles.subtitle}>
+    <section id="how-it-works" className={`pad ${styles.section}`}>
+      <div className="wide">
+        <Reveal>
+          <Eyebrow index="05">Our process</Eyebrow>
+        </Reveal>
+
+        <div className={styles.head}>
+          <Reveal as="h2" className={styles.heading}>
+            Your Website journey
+          </Reveal>
+          <Reveal as="p" delay={1} className={styles.lede}>
             A structured, seamless process designed for impact.
-          </p>
-        </motion.div>
-
-        {/* Step Indicator */}
-        <motion.div
-          className={styles.stepIndicator}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {steps.map((step, i) => (
-            <div key={i} className={styles.stepIndicatorItem}>
-              <button
-                className={`${styles.stepBtn} ${i === active ? styles.stepBtnActive : ""}`}
-                onClick={() => setActive(i)}
-              >
-                {step.label}
-              </button>
-              {i < steps.length - 1 && (
-                <span className={styles.stepDots}>
-                  <span className={styles.dot} />
-                  <span className={styles.dot} />
-                  <span className={styles.dot} />
-                  <span className={styles.dot} />
-                </span>
-              )}
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Detail Card */}
-        <div className={styles.cardWrapper}>
-          {/* Nav arrows */}
-          <button
-            className={`${styles.navArrow} ${styles.navArrowLeft}`}
-            onClick={() => goTo(active - 1)}
-            disabled={active === 0}
-            aria-label="Previous step"
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M12 5L7 10L12 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <button
-            className={`${styles.navArrow} ${styles.navArrowRight}`}
-            onClick={() => goTo(active + 1)}
-            disabled={active === steps.length - 1}
-            aria-label="Next step"
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              className={styles.card}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.35 }}
-            >
-              <div className={styles.cardLeft}>
-                <h3 className={styles.cardTitle}>{current.title}</h3>
-                <p className={styles.cardDescription}>{current.description}</p>
-              </div>
-              <div className={styles.cardRight}>
-                {current.deliverables.map((item, i) => (
-                  <div key={i} className={styles.deliverable}>
-                    <span className={styles.deliverableIcon}>
-                      {deliverableIcons[i % deliverableIcons.length]}
-                    </span>
-                    <span className={styles.deliverableText}>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          </Reveal>
         </div>
+
+        <StickyStack>
+          {steps.map((step, i) => (
+            <Card key={step.label} as="article" tone={tones[i]} shape className={styles.card}>
+              <div className={styles.when}>
+                <span className={styles.label}>{step.label}</span>
+                <b className={styles.big}>0{i + 1}</b>
+              </div>
+              <div className={styles.body}>
+                <h3 className={styles.title}>
+                  <MultiLine text={step.title} />
+                </h3>
+                <p className={styles.description}>{step.description}</p>
+                <ul className={styles.notes}>
+                  {step.deliverables.map((item) => (
+                    <li key={item} className={styles.note}>
+                      <i aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          ))}
+        </StickyStack>
       </div>
     </section>
   );

@@ -1,147 +1,230 @@
+/* Every page ends on a dark contact / CTA zone of the same ink, so the footer is
+   a lighter charcoal panel that rises over it: pulled up by the zone radius, its
+   rounded top shows the dark block behind instead of the two running together. */
 .footer {
-  background-color: var(--color-bg);
-  border-top: 1px solid var(--color-border);
-  padding: var(--space-16) 0 var(--space-8);
+  --footer-bg: #1a1a1a;
+  position: relative;
+  margin-top: calc(-1 * var(--radius-zone));
+  padding: clamp(72px, 10vh, 120px) var(--pad) 0;
+  box-shadow: 0 -1px 0 rgba(245, 245, 245, 0.08);
+  overflow: hidden;
+}
+
+/* The attribute lifts this above the global [data-theme="dark"] background,
+   which would otherwise win on load order. */
+.footer[data-theme="dark"] {
+  --zone-bg: var(--footer-bg);
+  background: var(--footer-bg);
 }
 
 .container {
-  max-width: var(--max-width);
+  max-width: var(--max-width-wide);
   margin: 0 auto;
-  padding: 0 var(--space-6);
 }
 
+/* ── Columns ──────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-10);
-  margin-bottom: var(--space-12);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(28px, 4vw, 64px);
+}
+
+.column {
+  min-width: 0;
 }
 
 .columnTitle {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: var(--space-4);
+  font-family: var(--font-text);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--hair-on-dark);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
 }
 
 .footerLink {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--hair-on-dark);
+  font-size: var(--fs-small);
+  color: var(--fg-soft);
+  transition: color 0.2s ease;
 }
 
 .footerLink:hover {
-  color: var(--color-text);
+  color: var(--fg);
+}
+
+.linkArrow {
+  flex: none;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.footerLink:hover .linkArrow {
+  opacity: 1;
+  transform: none;
 }
 
 .newsletterText {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-4);
+  font-size: var(--fs-small);
+  color: var(--fg-muted);
+  margin: 14px 0 18px;
 }
 
 .form {
   display: flex;
-  gap: var(--space-2);
+  flex-direction: column;
+  gap: 14px;
 }
 
 .input {
-  flex: 1;
+  width: 100%;
   min-width: 0;
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--text-sm);
-  font-family: inherit;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  color: var(--color-text);
+  padding: 10px 0;
+  font-size: var(--fs-small);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--hair-on-dark-strong);
+  color: var(--fg);
   outline: none;
+  border-radius: 0;
+  transition: border-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--fg-muted);
 }
 
 .input:focus {
-  border-color: var(--color-text-muted);
+  border-bottom-color: var(--color-accent-light);
+}
+
+.input:focus-visible {
+  outline: none;
 }
 
 .submitButton {
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  padding: 11px 18px;
+  font-size: var(--fs-small);
   font-weight: 600;
-  font-family: inherit;
-  color: var(--color-btn-primary-text);
-  background: var(--color-btn-primary);
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: opacity var(--transition-fast);
-  white-space: nowrap;
+  color: var(--color-text);
+  background: var(--color-text-on-dark);
+  border-radius: var(--radius-full);
+  transition:
+    transform 0.3s var(--ease),
+    color 0.3s var(--ease);
 }
 
 .submitButton:hover {
-  opacity: 0.85;
+  transform: translateY(-2px);
 }
 
+/* ── Giant wordmark ───────────────────────────────── */
+.giant {
+  width: 100%;
+  margin-top: clamp(48px, 8vh, 96px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.giantMark {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  /* The stroked outline optically sits a hair low against the legal rule
+     below it; one device pixel of lift squares it up at every width. */
+  transform: translateY(-1px);
+}
+
+/* The display face builds each glyph from overlapping contours (a stem plus a
+   bowl plus an arm), and an unfilled outline draws every one of them: the E
+   grows a box in its middle, the A a floating triangle. Painting the stroke
+   first and filling the footer's own background over it knocks those inner
+   seams out and leaves a single clean outline. */
+.giantMark text {
+  font-family: var(--font-display);
+  font-size: 165px;
+  font-weight: 800;
+  letter-spacing: 0;
+  fill: var(--footer-bg);
+  stroke: rgba(245, 245, 245, 0.8);
+  stroke-width: 4;
+}
+
+/* ── Legal row ────────────────────────────────────── */
 .bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: var(--space-8);
-  border-top: 1px solid var(--color-border);
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 22px 0 26px;
+  border-top: 1px solid var(--hair-on-dark-strong);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .copyright {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  color: var(--fg-soft);
+  font-size: inherit;
 }
 
 .legal {
   display: flex;
-  gap: var(--space-6);
+  gap: 26px;
+  flex-wrap: wrap;
 }
 
-.legalLink {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-}
-
-.legalLink:hover {
-  color: var(--color-text);
-}
-
+.legalLink,
 .legalButton {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  padding: 0;
+  color: var(--fg-soft);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  transition: color 0.2s ease;
 }
 
+.legalLink:hover,
 .legalButton:hover {
-  color: var(--color-text);
+  color: var(--color-accent-light);
 }
 
-@media (max-width: 768px) {
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 880px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-8);
-  }
-
-  .bottom {
-    flex-direction: column;
-    gap: var(--space-4);
-    text-align: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

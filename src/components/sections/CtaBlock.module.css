@@ -1,0 +1,39 @@
+.cta {
+  position: relative;
+  padding-top: var(--section);
+  /* Extra room for the footer, which overlaps this block by the zone radius. */
+  padding-bottom: calc(var(--section) + var(--radius-zone));
+  overflow: hidden;
+}
+
+.heading {
+  font-size: var(--fs-cta);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--fg);
+  max-width: 13ch;
+  margin-bottom: 24px;
+}
+
+.text {
+  font-size: var(--fs-sub);
+  line-height: 1.55;
+  color: var(--fg-soft);
+  max-width: 48ch;
+  margin-bottom: clamp(32px, 5vh, 52px);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 560px) {
+  .row > * {
+    flex: 1 1 auto;
+  }
+}

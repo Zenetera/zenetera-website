@@ -36,7 +36,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       <BlogPostView post={post} related={related} />
-      <FinalCTA />
+      <FinalCTA index="01" />
     </>
   );
 }

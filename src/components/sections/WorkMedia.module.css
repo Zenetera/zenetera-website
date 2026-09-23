@@ -1,0 +1,44 @@
+.media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--aspect, 16 / 10);
+  border-radius: var(--radius-media);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-bg-alt);
+  box-shadow: var(--shadow-media);
+}
+
+.flat {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.img {
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ── Placeholder art ──────────────────────────────── */
+.art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 20% 85%, rgba(214, 59, 49, 0.5), transparent 60%),
+    radial-gradient(ellipse at 85% 15%, rgba(232, 117, 97, 0.3), transparent 55%),
+    var(--color-bg-dark);
+}
+
+.artMark {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4.2vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0 clamp(20px, 5%, 48px);
+  color: rgba(245, 245, 245, 0.92);
+}

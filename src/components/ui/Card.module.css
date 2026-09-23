@@ -1,0 +1,75 @@
+.card {
+  position: relative;
+  border-radius: var(--radius-card);
+  padding: clamp(24px, 3.6vw, 48px);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--fg);
+  --shape: rgba(10, 10, 10, 0.06);
+}
+
+.compact {
+  padding: clamp(20px, 2.4vw, 30px);
+  border-radius: 22px;
+}
+
+/* ── Tones ────────────────────────────────────────── */
+.accent {
+  background: var(--color-accent-tint);
+  --shape: rgba(214, 59, 49, 0.2);
+  --surface: #ffffff;
+  --hairline: rgba(214, 59, 49, 0.22);
+}
+
+.accent2 {
+  background: var(--color-accent-tint-2);
+  --shape: rgba(214, 59, 49, 0.26);
+  --surface: #ffffff;
+  --hairline: rgba(214, 59, 49, 0.26);
+}
+
+.neutral {
+  background: var(--color-bg-alt);
+  --shape: rgba(10, 10, 10, 0.06);
+  --surface: #ffffff;
+}
+
+.surface {
+  background: var(--color-bg-card);
+  box-shadow: inset 0 0 0 1px var(--hair);
+  --shape: var(--color-accent-tint);
+}
+
+.dark {
+  background: var(--color-bg-dark);
+  --shape: rgba(214, 59, 49, 0.42);
+}
+
+.glass {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  --shape: var(--color-accent-glow);
+}
+
+/* ── Corner shape ─────────────────────────────────── */
+.shape::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  bottom: -90px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: var(--shape);
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .shape::after {
+    width: 180px;
+    height: 180px;
+    right: -60px;
+    bottom: -70px;
+  }
+}

@@ -1,199 +1,113 @@
-/* ── Section ──────────────────────────────────────── */
 .section {
-  padding: var(--space-24) 0;
+  padding-top: var(--section);
+  padding-bottom: var(--section);
   background: var(--color-bg);
 }
 
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: var(--space-16);
-}
-
-.label {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-  display: block;
-  margin-bottom: var(--space-4);
+.head {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--gap);
+  align-items: end;
+  margin-bottom: clamp(40px, 7vh, 72px);
 }
 
 .heading {
-  margin-bottom: var(--space-4);
+  font-size: var(--fs-h2);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  max-width: 14ch;
 }
 
-.subtitle {
-  font-size: var(--text-base);
-  color: var(--color-text-muted);
-  max-width: 540px;
-  margin: 0 auto;
-}
-
-/* ── Care Table ──────────────────────────────────── */
-.tableWrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.tierHeader {
-  display: grid;
-  grid-template-columns: 1.6fr repeat(4, 1fr);
-  gap: 0;
-  margin-bottom: var(--space-2);
-  text-align: center;
-}
-
-.tierCol {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.tierName {
-  font-size: var(--text-sm);
-  font-weight: 600;
+.lede {
+  font-size: var(--fs-sub);
   color: var(--color-text-secondary);
+  max-width: 42ch;
+  justify-self: end;
 }
 
-.tierPrice {
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--color-text);
+.upgrades {
+  margin-top: var(--section);
 }
 
-.tierNote {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-2);
-}
-
-.row {
+.grid {
   display: grid;
-  grid-template-columns: 1.6fr repeat(4, 1fr);
-  gap: 0;
-  border-bottom: 1px solid var(--color-border-light);
-  align-items: center;
-}
-
-.featureName {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  padding: var(--space-4) 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .cell {
-  text-align: center;
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  padding: var(--space-4) 0;
+  display: flex;
 }
 
-.check {
-  color: var(--color-text);
-  font-size: var(--text-lg);
-}
-
-.cellText {
-  font-weight: 500;
-}
-
-/* ── Support Upgrades ────────────────────────────── */
-.upgradesSection {
-  padding-top: var(--space-24);
-}
-
-.upgradesHeader {
-  text-align: center;
-  margin-bottom: var(--space-12);
-}
-
-.upgradesGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
-}
-
-.upgradeCard {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
+.card {
   display: flex;
   flex-direction: column;
-  transition: all var(--transition);
+  width: 100%;
+  box-shadow: var(--shadow-card);
 }
 
-.upgradeCard:hover {
-  border-color: var(--color-accent-light);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+.cardLabel {
+  color: var(--fg-soft);
+  margin-bottom: 20px;
 }
 
-.upgradeLabel {
-  font-size: var(--text-xs);
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: var(--fs-number);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--color-accent);
+  margin-bottom: 18px;
+}
+
+:global(.tone-dark) .price {
+  color: var(--color-accent-light);
+}
+
+.priceNote {
+  font-family: var(--font-text);
+  font-size: 0.75rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-2);
+  color: var(--fg-muted);
 }
 
-.upgradePrice {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: var(--space-1);
+.cardTitle {
+  font-size: var(--fs-h3);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: 12px;
 }
 
-.upgradePriceNote {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-4);
-}
-
-.upgradeTitle {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  margin-bottom: var(--space-3);
-}
-
-.upgradeDescription {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
+.description {
+  font-size: var(--fs-small);
   line-height: 1.6;
-  flex: 1;
+  color: var(--fg-soft);
 }
 
-.upgradeCta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-text);
-  transition: gap var(--transition-fast);
-}
-
-.upgradeCta:hover {
-  gap: var(--space-3);
-}
-
-/* ── Responsive ──────────────────────────────────── */
-@media (max-width: 768px) {
-  .tierHeader,
-  .row {
-    grid-template-columns: 1.4fr repeat(4, 1fr);
-    min-width: 600px;
+@media (max-width: 1000px) {
+  .head {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 
-  .upgradesGrid {
+  .lede {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
     grid-template-columns: 1fr;
   }
 }

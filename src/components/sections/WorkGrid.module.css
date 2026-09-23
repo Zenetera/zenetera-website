@@ -1,58 +1,37 @@
 .section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--space-section) var(--space-xl);
+  padding-top: clamp(24px, 4vh, 48px);
+  padding-bottom: var(--section);
+  background: var(--color-bg);
 }
 
-.heading {
-  font-size: var(--font-size-2xl);
-  margin-bottom: var(--space-2xl);
+.empty {
+  font-size: var(--fs-sub);
+  color: var(--color-text-muted);
+}
+
+.leadWrap {
+  margin-bottom: clamp(16px, 2vw, 24px);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--space-xl);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
 }
 
-.card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  overflow: hidden;
-}
-
-.imagePlaceholder {
-  aspect-ratio: 16 / 9;
-  background-color: var(--color-surface);
-}
-
-.cardBody {
-  padding: var(--space-lg);
-}
-
-.client {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-xs);
-}
-
-.cardTitle {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--space-sm);
-}
-
-.tags {
+.cell {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
 }
 
-.tag {
-  font-size: var(--font-size-xs);
-  padding: var(--space-xs) var(--space-sm);
-  background-color: var(--color-surface);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-text-muted);
+/* Keep in step with the grid `sizes` hint in WorkCard. */
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }

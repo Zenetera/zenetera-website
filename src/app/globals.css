@@ -7,29 +7,72 @@
   padding: 0;
 }
 
-/* ── CSS Custom Properties ─────────────────────────── */
+/* ── Design tokens ─────────────────────────────────── */
 :root {
-  /* Colors — Premium Dark-Accent Theme */
+  /* Colours — Zenetera palette (unchanged brand values) */
   --color-bg: #fafafa;
   --color-bg-alt: #f0f0f0;
+  --color-bg-hero: #f5f5f7;
+  --color-bg-hero-rgb: 245, 245, 247; /* same colour, for the hero's fade-outs */
   --color-bg-dark: #0a0a0a;
+  --color-bg-dark-2: #141414;
   --color-bg-card: #ffffff;
   --color-text: #0a0a0a;
+  --color-heading: #0d0d12;
   --color-text-secondary: #4a4a4a;
-  --color-text-muted: #777777;
+  --color-text-muted: #6b6b6b; /* shade of the original #777 so small text passes AA on #fafafa */
   --color-text-on-dark: #f5f5f5;
   --color-accent: #D63B31;
   --color-accent-light: #E87561;
+  --color-accent-text: #C2332A; /* shade of the accent for small text on light backgrounds (5.3:1) */
+  --color-accent-tint: #FBE9E6; /* tint of the accent, used as a card fill */
+  --color-accent-tint-2: #F6D2CC;
   --color-accent-glow: rgba(214, 59, 49, 0.15);
+  /* Headline flair, carried over from the original site: violet → accent →
+     coral → peach, drawn at 200% so the drift has somewhere to go. */
+  --gradient-flair: linear-gradient(135deg, #7b5ea7 0%, #D63B31 30%, #E87561 50%, #f7a06b 70%, #7b5ea7 100%);
   --color-label: #D63B31;
   --color-border: #e2e2e2;
   --color-border-light: #efefef;
+
+  /* Hairlines */
+  --hair: rgba(10, 10, 10, 0.14);
+  --hair-strong: rgba(10, 10, 10, 0.26);
+  --hair-on-dark: rgba(245, 245, 245, 0.16);
+  --hair-on-dark-strong: rgba(245, 245, 245, 0.3);
+
+  /* Contextual (overridden inside dark zones) */
+  --fg: var(--color-text);
+  --fg-soft: var(--color-text-secondary);
+  --fg-muted: var(--color-text-muted);
+  --hairline: var(--hair);
+  --hairline-strong: var(--hair-strong);
+  --surface: var(--color-bg-card);
+  --surface-2: var(--color-bg-alt);
+  --accent-fg: var(--color-accent-text);
+  --zone-bg: var(--color-bg);
 
   /* Buttons */
   --color-btn-primary: #0a0a0a;
   --color-btn-primary-text: #ffffff;
 
-  /* Font sizes */
+  /* Fluid type scale */
+  --fs-hero: clamp(2.125rem, 7vw, 6.25rem);
+  --fs-cta: clamp(2.375rem, 6.6vw, 5.75rem);
+  --fs-h2: clamp(2rem, 5vw, 4.25rem);
+  --fs-h2-sm: clamp(1.75rem, 3.8vw, 3rem);
+  --fs-manifesto: clamp(1.5rem, 3.6vw, 3.125rem);
+  --fs-h3-row: clamp(1.375rem, 3vw, 2.625rem);
+  --fs-h3-card: clamp(1.25rem, 2.1vw, 1.75rem);
+  --fs-h3: clamp(1.125rem, 1.6vw, 1.375rem);
+  --fs-number: clamp(2.5rem, 5.4vw, 4.75rem);
+  --fs-giant: clamp(5rem, 18.5vw, 19rem);
+  --fs-sub: clamp(1rem, 1.35vw, 1.1875rem);
+  --fs-body: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  --fs-small: 0.875rem;
+  --fs-eyebrow: clamp(0.6875rem, 0.95vw, 0.8125rem);
+
+  /* Legacy size tokens (still used by a few components) */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -56,38 +99,100 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
-  /* Layout */
+  /* Rhythm */
+  --nav-h: 68px;
+  --pad: clamp(20px, 4.5vw, 64px);
+  --section: clamp(68px, 9.5vh, 124px);
+  --section-sm: clamp(48px, 6.5vh, 84px);
+  --gap: clamp(16px, 3vw, 48px);
+  --eyebrow-gap: clamp(28px, 5vh, 56px);
   --max-width: 1200px;
   --max-width-narrow: 800px;
-  --max-width-wide: 1400px;
+  --max-width-wide: 1680px;
+
+  /* Radii */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-card: 28px;
+  --radius-media: 32px;
+  --radius-zone: 40px;
   --radius-full: 999px;
 
-  /* Transitions */
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.2, 1);
   --transition-fast: 0.15s ease;
-  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.3s var(--ease);
+  --transition-slow: 0.6s var(--ease);
+  --reveal-duration: 0.9s;
+
+  /* Shadows */
+  --shadow-card: 0 30px 60px -34px rgba(10, 10, 10, 0.38);
+  --shadow-media: 0 40px 80px -40px rgba(10, 10, 10, 0.45);
+  --shadow-float: 0 30px 50px -20px rgba(10, 10, 10, 0.3);
+}
+
+/* Dark zones: sections that flip to the ink background. The nav reads the
+   same attribute to invert its own colours while it overlaps one. */
+[data-theme="dark"],
+.tone-dark {
+  --fg: var(--color-text-on-dark);
+  --fg-soft: rgba(245, 245, 245, 0.74);
+  --fg-muted: rgba(245, 245, 245, 0.58);
+  --hairline: var(--hair-on-dark);
+  --hairline-strong: var(--hair-on-dark-strong);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --accent-fg: var(--color-accent-light);
+  --zone-bg: var(--color-bg-dark);
+  background: var(--color-bg-dark);
+  color: var(--fg);
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+.tone-dark h2,
+.tone-dark h3,
+.tone-dark h4 {
+  color: var(--fg);
+}
+
+[data-theme="dark"] p,
+.tone-dark p {
+  color: var(--fg-soft);
+}
+
+[data-theme="dark"] {
+  --btn-bg: var(--color-text-on-dark);
+  --btn-fg: var(--color-text);
 }
 
 /* ── Base ──────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: var(--font-body), system-ui, sans-serif;
-  font-size: var(--text-base);
+  --font-display: var(--font-heading), system-ui, sans-serif;
+  --font-text: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+main {
+  display: block;
 }
 
 /* ── Typography ────────────────────────────────────── */
@@ -97,38 +202,41 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-heading), system-ui, sans-serif;
-  color: var(--color-text);
+  font-family: var(--font-display);
+  color: var(--color-heading);
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.1;
+  font-weight: 800;
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: var(--text-5xl);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: var(--fs-hero);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
 }
 
 h2 {
-  font-size: var(--text-4xl);
-  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
 }
 
 h3 {
-  font-size: var(--text-2xl);
-  font-weight: 600;
-  line-height: 1.3;
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 h4 {
-  font-size: var(--text-xl);
-  font-weight: 600;
+  font-size: var(--text-lg);
+  font-weight: 700;
   line-height: 1.3;
 }
 
 p {
   color: var(--color-text-secondary);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 a {
@@ -137,9 +245,14 @@ a {
   transition: color var(--transition-fast);
 }
 
-img {
-  max-width: 100%;
+img,
+svg {
   display: block;
+  max-width: 100%;
+}
+
+svg {
+  max-width: none;
 }
 
 ul,
@@ -147,23 +260,201 @@ ol {
   list-style: none;
 }
 
-/* ── Selection ─────────────────────────────────────── */
-::selection {
-  background: var(--color-accent);
-  color: white;
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
 }
 
-/* ── Responsive Typography ────────────────────────── */
-@media (max-width: 768px) {
-  h1 {
-    font-size: var(--text-3xl);
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+/* ── Layout primitives ─────────────────────────────── */
+.pad {
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+}
+
+.wide {
+  max-width: var(--max-width-wide);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Long-form pages (case studies): a column the 1600px screenshots can fill
+   without being upscaled. */
+.contain {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section {
+  padding-top: var(--section);
+  padding-bottom: var(--section);
+}
+
+.zone-top {
+  border-radius: var(--radius-zone) var(--radius-zone) 0 0;
+  position: relative;
+}
+
+/* ── Display helpers ───────────────────────────────── */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+/* Each flair word is its own element (WordRise splits per word), so `--fi`
+   (the word's place in the phrase) staggers the drift: the colour runs across
+   the phrase instead of repeating on every word. */
+.flair {
+  font-style: normal;
+  white-space: nowrap;
+  background: var(--gradient-flair);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: flairShift 4s ease-in-out infinite;
+  animation-delay: calc(var(--fi, 0) * -0.7s);
+}
+
+@keyframes flairShift {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Word-rise headline masks */
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+.w > span {
+  display: inline-block;
+  transform: translateY(130%) rotate(3deg);
+  animation: wordUp 0.9s var(--ease) forwards;
+  animation-delay: calc(var(--i, 0) * 70ms + 150ms);
+}
+
+@keyframes wordUp {
+  to {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Scroll reveal ─────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(38px);
+  transition:
+    opacity var(--reveal-duration) var(--ease),
+    transform var(--reveal-duration) var(--ease);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal[data-delay="1"] {
+  transition-delay: 0.1s;
+}
+.reveal[data-delay="2"] {
+  transition-delay: 0.2s;
+}
+.reveal[data-delay="3"] {
+  transition-delay: 0.3s;
+}
+.reveal[data-delay="4"] {
+  transition-delay: 0.4s;
+}
+
+/* Visually hidden (accessible) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Reduced motion ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  h2 {
-    font-size: var(--text-3xl);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 
-  h3 {
-    font-size: var(--text-xl);
+  .w > span {
+    transform: none;
+    animation: none;
+  }
+
+  .flair {
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

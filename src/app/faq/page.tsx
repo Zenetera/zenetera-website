@@ -35,11 +35,12 @@ export default function FaqPage() {
       />
       <FAQ
         expanded
+        index="01"
         headingLevel="h1"
         heading="Everything you need to know"
         subtitle="Pricing, process and ownership, plus the questions we get asked most by villa owners, salons, trades and property businesses."
       />
-      <FinalCTA />
+      <FinalCTA index="02" />
     </>
   );
 }

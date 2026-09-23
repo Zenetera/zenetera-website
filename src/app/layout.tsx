@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import ReferralBanner from "@/components/layout/ReferralBanner";
+import MotionPreferences from "@/motion/MotionPreferences";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-TVT5MV6M2T";
@@ -59,6 +60,11 @@ export default function RootLayout({
             gtag('config', '${GA_MEASUREMENT_ID}');
           `}
         </Script>
+        {/* Scroll reveals depend on JS; keep content visible without it. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+        <MotionPreferences />
         <ReferralBanner />
         <Nav />
         <main>{children}</main>

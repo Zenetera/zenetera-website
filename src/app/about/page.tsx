@@ -19,7 +19,7 @@ export default function AboutPage() {
       <AboutStory />
       <AboutValues />
       <AboutApproach />
-      <FinalCTA />
+      <FinalCTA index="04" />
     </>
   );
 }

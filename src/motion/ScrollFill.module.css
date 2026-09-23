@@ -1,0 +1,41 @@
+.text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-manifesto);
+  line-height: 1.16;
+  letter-spacing: -0.024em;
+  max-width: 24ch;
+  color: var(--fg);
+  text-transform: none;
+}
+
+/* Resting words stay readable (3:1 on the light background) before they fill in. */
+.word {
+  opacity: 0.46;
+  transition: opacity 0.4s ease;
+}
+
+.on {
+  opacity: 1;
+}
+
+/* Same drifting gradient as the headline `.flair` (see globals.css). */
+.accent.on {
+  background: var(--gradient-flair);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shift 4s ease-in-out infinite;
+  animation-delay: calc(var(--fi, 0) * -0.7s);
+}
+
+@keyframes shift {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}

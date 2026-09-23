@@ -1,121 +1,64 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
+import Button from "@/components/ui/Button";
+import WordRise from "@/components/ui/WordRise";
+import { STUDIO_STATS } from "@/content/stats";
+import Counter from "@/motion/Counter";
+import DottedWorldMap from "./DottedWorldMap";
 import styles from "./Hero.module.css";
-import DashboardIllustration from "./DashboardIllustration";
 
-interface HeroProps {
-  heading?: string;
-  subheading?: string;
-}
+/* When the proof panel's fade-up begins (its animation-delay in the
+   stylesheet); each stat starts counting a beat after the one before it. */
+const PROOF_REVEAL_MS = 1150;
+const PROOF_STAGGER_MS = 140;
 
-export default function Hero({ heading, subheading }: HeroProps) {
-  if (heading) {
-    return (
-      <motion.section
-        className={styles.pageHero}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className={styles.pageHeading}>{heading}</h1>
-        {subheading && <p className={styles.pageSubheading}>{subheading}</p>}
-      </motion.section>
-    );
-  }
-
-  return <HomepageHero />;
-}
-
-function HomepageHero() {
-  const heroRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const dashboardY = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const dotGridY = useTransform(scrollYProgress, [0, 1], [0, 50]);
-
+export default function Hero() {
   return (
-    <section className={styles.hero} ref={heroRef}>
-      {/* Background layers */}
-      <motion.div className={styles.dotGrid} style={{ y: dotGridY }} />
-      <div className={styles.grain} />
+    <section className={styles.hero}>
+      <div className={styles.stage}>
+        {/* Backdrop for the whole stage. The veil over it keeps the middle of
+            the field calm, so a passing ripple never fights the headline. */}
+        <DottedWorldMap className={styles.map} />
+        <div className={styles.veil} aria-hidden="true" />
 
-      <div className={styles.split}>
-        {/* ── TOP: Copy + CTA ──────────────────── */}
-        <motion.div
-          className={styles.left}
-          style={{ y: textY, opacity: textOpacity }}
-        >
-          <motion.h1
+        <div className={`pad wide ${styles.inner}`}>
+          <WordRise
+            as="h1"
             className={styles.heading}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
-            We build the{" "}
-            <span className={styles.headingAccent}>
-              digital infrastructure
-            </span>{" "}
-            your business runs on
-          </motion.h1>
+            text="We build the digital infrastructure your business runs on"
+            flair="digital infrastructure"
+          />
 
-          <motion.p
-            className={styles.subheading}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Design. Develop. Automate. Grow.
-          </motion.p>
+          <p className={styles.sub}>
+            We help small businesses, freelancers, and entrepreneurs get more customers through
+            websites, automation, and smarter online presence.
+          </p>
 
-          <motion.div
-            className={styles.ctas}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
-          >
-            <Link href="/#contact" className={styles.ctaPrimary}>
+          <div className={styles.ctas}>
+            <Button href="/#contact" size="lg">
               Book a free audit
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                className={styles.ctaArrow}
-              >
-                <path
-                  d="M3 8H13M13 8L9 4M13 8L9 12"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-            <Link href="/#how-it-works" className={styles.ctaSecondary}>
+            </Button>
+            <Button href="/#how-it-works" variant="ghost" size="lg" arrow="down">
               See how it works
-            </Link>
-          </motion.div>
-        </motion.div>
+            </Button>
+          </div>
+        </div>
+      </div>
 
-        {/* ── BOTTOM: Dashboard Illustration ───────── */}
-        <motion.div
-          className={styles.right}
-          style={{ y: dashboardY }}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <DashboardIllustration />
-        </motion.div>
+      {/* Proof under the CTAs: a frosted panel straddling the foot of the
+          hero, the numbers counting up as it fades in. */}
+      <div className={`pad ${styles.proof}`}>
+        <ul className={styles.panel} aria-label="Zenetera in numbers">
+          {STUDIO_STATS.map((stat, i) => (
+            <li key={stat.label} className={styles.stat}>
+              <Counter
+                value={stat.value}
+                className={styles.value}
+                affixClassName={`flair ${styles.unit}`}
+                revealAt={PROOF_REVEAL_MS + i * PROOF_STAGGER_MS}
+              />
+              <span className={styles.label}>{stat.label}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

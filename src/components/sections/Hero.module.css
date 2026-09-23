@@ -1,283 +1,313 @@
-/* ── Homepage Hero — Split Screen ─────────────── */
+/* ── Homepage hero ────────────────────────────────── */
+/* The dotted world map is the backdrop and the copy sits centred on top of
+   it, so the type is deliberately smaller than the page's other display
+   sizes: it has to read against a moving field rather than empty paper. */
 .hero {
   position: relative;
-  min-height: 100vh;
-  background: #f5f5f7;
+  background: var(--color-bg-hero);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
-/* Dot grid background — subtle depth */
-.dotGrid {
+/* The map's box: the copy and the proof panel both sit over the field. */
+.stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.map {
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.05;
-  background-image: radial-gradient(
-    circle,
-    rgba(0, 0, 0, 0.8) 1px,
-    transparent 1px
-  );
-  background-size: 24px 24px;
+  /* The map tracks the pointer on the window, so it never needs to catch an
+     event itself — and must not, with the copy sitting over it. */
   pointer-events: none;
 }
 
-.grain {
+/* Page background painted back over the middle and the four edges: the dot
+   field stays legible at the corners and fades out under the headline. The
+   strengths and the centre's shape are properties so the narrow layout can
+   retune them — the map is drawn smaller there, and the full veil would wash
+   it away entirely. */
+.veil {
+  --veil-core: 0.82;
+  --veil-mid: 0.5;
+  --veil-side: 0.7;
+  --veil-shape: 48% 44% at 50% 45%;
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 128px;
   pointer-events: none;
+  background:
+    radial-gradient(
+      var(--veil-shape),
+      rgba(var(--color-bg-hero-rgb), var(--veil-core)) 0%,
+      rgba(var(--color-bg-hero-rgb), var(--veil-mid)) 50%,
+      rgba(var(--color-bg-hero-rgb), 0) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(var(--color-bg-hero-rgb), 0.85) 0%,
+      rgba(var(--color-bg-hero-rgb), 0) 18%,
+      rgba(var(--color-bg-hero-rgb), 0) 78%,
+      rgba(var(--color-bg-hero-rgb), 0.92) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(var(--color-bg-hero-rgb), var(--veil-side)) 0%,
+      rgba(var(--color-bg-hero-rgb), 0) 13%,
+      rgba(var(--color-bg-hero-rgb), 0) 87%,
+      rgba(var(--color-bg-hero-rgb), var(--veil-side)) 100%
+    );
 }
 
-/* ── Stacked layout ──────────────────────────── */
-.split {
+/* ── Centred copy ─────────────────────────────────── */
+.inner {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: var(--space-20) var(--space-4) 0;
-  flex: 1;
-  gap: var(--space-12);
+  justify-content: center;
+  text-align: center;
+  /* The viewport less the nav, the referral strip and the proof panel, so
+     the whole panel still lands above the fold. */
+  min-height: 560px;
+  min-height: clamp(500px, calc(100svh - var(--nav-h) - 200px), 760px);
+  padding-top: clamp(48px, 8vh, 96px);
+  padding-bottom: clamp(32px, 5vh, 56px);
 }
 
-/* ── Top: Copy ───────────────────────────────── */
-.left {
+/* Two curves meeting at 2.75rem: 4.6vw on wide screens, and 9.4vw on phones,
+   the most "INFRASTRUCTURE" (9.2em, unbreakable) allows while still fitting the
+   column down to a 320px screen. */
+.heading {
+  font-size: clamp(1.75rem, max(4.6vw, min(9.4vw, 2.75rem)), 3.875rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--color-heading);
+  text-wrap: balance;
+  /* In em, so the line count holds as the heading scales. */
+  max-width: 16em;
+}
+
+.heading :global(.flair) {
+  font-size: 1em;
+}
+
+.sub {
+  margin-top: clamp(18px, 2.6vh, 28px);
+  max-width: 52ch;
+  font-size: var(--fs-sub);
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.85s var(--ease) forwards;
+}
+
+.ctas {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: clamp(26px, 3.6vh, 42px);
+  opacity: 0;
+  animation: fadeUp 0.9s 1s var(--ease) forwards;
+}
+
+/* ── Proof panel ──────────────────────────────────── */
+/* The studio's four numbers on a frosted panel, frosted the same way as the
+   scrolled nav, straddling the foot of the hero: the band it sits in is hero
+   grey down to the panel's midline and the page colour below it — the colour
+   the next section opens on — so the panel hangs half off the hero. The
+   bottom padding is only room for the panel's shadow, which the hero's
+   overflow would otherwise clip, so the midline sits half of it above 50%. */
+.proof {
+  --shadow-room: 32px;
+  position: relative;
+  z-index: 2;
+  padding-bottom: var(--shadow-room);
+  background: linear-gradient(
+    var(--color-bg-hero) calc(50% - var(--shadow-room) / 2),
+    var(--color-bg) 0
+  );
+}
+
+/* The panel fades up after the CTAs and the counters run as it arrives. The
+   fade is on the panel, not the band, so the split behind it never moves. */
+.panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1120px;
+  margin: 0 auto;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.52));
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  /* A white inner edge for the glass, a hairline outside it, and a long soft
+     drop so the panel floats over the field rather than sitting on it. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 1px var(--hairline),
+    0 30px 60px -36px rgba(13, 13, 18, 0.3);
+  opacity: 0;
+  animation: fadeUp 0.9s 1.15s var(--ease) forwards;
+}
+
+/* The headline's gradient caught along the top edge, fading out at both
+   ends, with a faint glow under it. */
+.panel::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: var(--gradient-flair);
+  box-shadow: 0 1px 12px 1px var(--color-accent-glow);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+}
+
+.stat {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+  padding: clamp(22px, 2.6vw, 32px) clamp(14px, 2vw, 28px);
   text-align: center;
-  gap: 0;
-  width: 100%;
-  max-width: 960px;
 }
 
-/* ── Bottom: Dashboard ───────────────────────── */
-.right {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  max-width: 1400px;
-  margin-bottom: var(--space-24);
-  overflow: visible;
-}
-
-/* Fade-out mask on bottom third of dashboard removed */
-
-/* Glow behind dashboard */
-.right::before {
+/* Dividers that fade out towards the panel's edges instead of cutting it. */
+.stat:not(:first-child)::before {
   content: "";
   position: absolute;
-  top: 40%;
-  left: 50%;
-  width: 90%;
-  height: 60%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(
-    ellipse at center,
-    var(--color-accent-glow) 0%,
-    transparent 70%
-  );
-  filter: blur(60px);
-  pointer-events: none;
-  z-index: -1;
+  top: 20%;
+  bottom: 20%;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(transparent, var(--hairline-strong), transparent);
 }
 
-/* Heading */
-.heading {
-  font-size: var(--text-6xl);
-  font-weight: 700;
-  color: #0d0d12;
-  line-height: 1.05;
-  margin-bottom: var(--space-6);
+.value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.3vw, 2.875rem);
+  font-weight: 800;
+  line-height: 1;
   letter-spacing: -0.035em;
+  white-space: nowrap;
+  color: var(--color-heading);
 }
 
-.headingAccent {
-  background: linear-gradient(
-    135deg,
-    #7b5ea7 0%,
-    #D63B31 30%,
-    #E87561 50%,
-    #f7a06b 70%,
-    #7b5ea7 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientShift 4s ease-in-out infinite;
+/* The "+", "%", "×" and "day" in the headline's gradient, a size down so
+   the figure itself leads. */
+.unit {
+  font-size: 0.72em;
+  letter-spacing: -0.01em;
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
-}
-
-.subheading {
-  font-size: var(--text-lg);
-  color: rgba(0, 0, 0, 0.65);
-  line-height: 1.7;
-  margin-bottom: var(--space-10);
-  max-width: 500px;
-}
-
-/* CTAs — pill primary + rounded-rect secondary */
-.ctas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-12);
-}
-
-.ctaPrimary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-8);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: #ffffff;
-  background: var(--color-accent);
-  border-radius: var(--radius-full);
-  transition: all var(--transition);
-}
-
-.ctaPrimary:hover {
-  background: var(--color-accent-light);
-  transform: translateY(-2px);
-}
-
-.ctaArrow {
-  transition: transform var(--transition-fast);
-}
-
-.ctaPrimary:hover .ctaArrow {
-  transform: translateX(3px);
-}
-
-.ctaSecondary {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-4) var(--space-8);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.85);
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: var(--radius-md);
-  transition: all var(--transition);
-}
-
-.ctaSecondary:hover {
-  border-color: rgba(0, 0, 0, 0.3);
-  background: rgba(0, 0, 0, 0.08);
-}
-
-/* Scroll indicator */
-.scrollIndicator {
-  position: absolute;
-  bottom: var(--space-8);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  width: 24px;
-  height: 40px;
-  border: 2px solid rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-
-.scrollDot {
-  width: 4px;
-  height: 8px;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 2px;
-}
-
-/* ── Page Hero (subpages) ─────────────────────── */
-.pageHero {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--space-16) var(--space-6) var(--space-12);
-}
-
-.pageHeading {
-  font-size: var(--text-4xl);
-  margin-bottom: var(--space-4);
-}
-
-.pageSubheading {
-  font-size: var(--text-base);
+.label {
+  max-width: 24ch;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.4;
   color: var(--color-text-muted);
-  max-width: 600px;
+  text-wrap: balance;
 }
 
-/* ── Responsive ──────────────────────────────── */
-@media (max-width: 1024px) {
-  .split {
-    gap: var(--space-10);
-    padding: var(--space-16) var(--space-6) 0;
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 700px) {
+  /* The copy fills the column edge to edge here, so the calm area is widened
+     to cover the ends of its lines; the dots stay clear at the corners. */
+  .veil {
+    --veil-core: 0.74;
+    --veil-mid: 0.46;
+    --veil-side: 0.4;
+    --veil-shape: 72% 44% at 50% 50%;
   }
 
-  .heading {
-    font-size: var(--text-5xl);
+  /* The viewport-sized stage floats the copy in a big field on desktop; on a
+     phone that left ~130px of bare field above and below it. Here the stage
+     hugs its content instead. */
+  .inner {
+    min-height: 0;
+    /* Less above than below: the headline's caps already sit a few px inside
+       their line box, and a heavy block reads closer to what's under it. */
+    padding-top: 44px;
+    padding-bottom: 60px;
   }
 
-  .right {
-    max-width: 900px;
+  /* Desktop's map spans the stage top to bottom; the short phone stage would
+     leave it a band across the middle with bare field above the headline. */
+  .map {
+    --map-fill: 1;
+  }
+
+  /* Two by two. The third stat starts a row, so it loses its vertical
+     divider, and the second row gets a horizontal one above it. */
+  .panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: var(--radius-lg);
+  }
+
+  .stat:nth-child(odd)::before {
+    content: none;
+  }
+
+  .stat:nth-child(n + 3)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 14%;
+    right: 14%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--hairline-strong), transparent);
   }
 }
 
-@media (max-width: 768px) {
-  .hero {
-    min-height: auto;
+@media (max-width: 560px) {
+  .sub {
+    margin-top: 18px;
+    font-size: 1.0625rem;
   }
 
-  .split {
-    gap: var(--space-10);
-    padding: var(--space-16) var(--space-5) 0;
-  }
-
-  .heading {
-    font-size: var(--text-4xl);
-  }
-
-  .subheading {
-    max-width: 100%;
-  }
-
+  /* Compact pills stacked at the width of the wider one, rather than two
+     full-width bars. */
   .ctas {
+    display: grid;
+    grid-template-columns: max-content;
     justify-content: center;
-    margin-bottom: var(--space-10);
+    gap: 10px;
+    margin-top: 28px;
   }
 
-  .scrollIndicator {
-    display: none;
-  }
-
-  .pageHeading {
-    font-size: var(--text-3xl);
+  .ctas .cta {
+    padding: 15px 26px;
+    font-size: 0.9375rem;
   }
 }
 
-@media (max-width: 480px) {
-  .heading {
-    font-size: var(--text-3xl);
+@media (prefers-reduced-motion: reduce) {
+  .sub,
+  .ctas,
+  .panel {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Keyframes are module-scoped, so the shared ones are redeclared here. */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

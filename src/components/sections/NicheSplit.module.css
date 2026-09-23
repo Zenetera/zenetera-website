@@ -1,127 +1,178 @@
 .section {
-  padding: var(--space-24) 0;
+  padding-top: var(--section);
+  /* The "plus more" line closes the section, so it needs less room under it. */
+  padding-bottom: var(--section-sm);
   background: var(--color-bg);
 }
 
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: var(--space-16);
-}
-
-.label {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-  display: block;
-  margin-bottom: var(--space-4);
+/* ── Head ─────────────────────────────────────────── */
+.head {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--gap);
+  align-items: end;
+  margin-bottom: clamp(40px, 7vh, 72px);
 }
 
 .heading {
-  color: var(--color-text);
-  margin-bottom: var(--space-4);
+  font-size: var(--fs-h2);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  max-width: 14ch;
 }
 
-.subtitle {
-  font-size: var(--text-lg);
-  color: var(--color-text-secondary);
-  max-width: 500px;
-  margin: 0 auto;
+.lede {
+  font-size: clamp(1.25rem, 2.2vw, 1.875rem);
+  max-width: 30ch;
+  justify-self: end;
 }
 
 /* ── Grid ─────────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
 }
 
-/* ── Card ─────────────────────────────────────────── */
+.cell {
+  display: flex;
+}
+
+.cardLink {
+  display: flex;
+  width: 100%;
+  border-radius: var(--radius-card);
+  transition: transform 0.45s var(--ease);
+}
+
+.cardLink:hover {
+  transform: translateY(-6px);
+}
+
 .card {
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  transition: all var(--transition);
-}
-
-.card:hover {
-  border-color: rgba(214, 59, 49, 0.3);
-  box-shadow: 0 12px 48px rgba(214, 59, 49, 0.1);
-  transform: translateY(-4px);
-}
-
-.cardInner {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: var(--space-8);
+  width: 100%;
+  min-height: 340px;
+  box-shadow: var(--shadow-card);
+}
+
+.card::after {
+  transition: transform 0.6s var(--ease);
+}
+
+.cardLink:hover .card::after {
+  transform: scale(1.35);
 }
 
 .cardEyebrow {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-  display: block;
-  margin-bottom: var(--space-3);
+  color: var(--fg-soft);
+  margin-bottom: clamp(28px, 5vh, 56px);
 }
 
 .cardTitle {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: var(--space-3);
-  line-height: 1.2;
+  font-size: var(--fs-h3-card);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: 14px;
 }
 
 .cardTagline {
-  font-size: var(--text-base);
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-  margin-bottom: var(--space-6);
-  flex: 1;
+  font-size: var(--fs-body);
+  color: var(--fg-soft);
+  max-width: 30ch;
+  margin-bottom: 28px;
 }
 
-.cardArrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-accent);
+/* "Explore" pill */
+.note {
   margin-top: auto;
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--fg);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px -10px rgba(10, 10, 10, 0.3);
 }
 
-.cardArrow svg {
-  transition: transform var(--transition);
+.note i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
 }
 
-.card:hover .cardArrow svg {
-  transform: translateX(4px);
+.noteArrow {
+  transition: transform 0.3s var(--ease);
+}
+
+.cardLink:hover .noteArrow {
+  transform: translateX(4px) rotate(-45deg);
+}
+
+:global(.tone-dark) .note {
+  background: rgba(245, 245, 245, 0.12);
+  box-shadow: none;
+  backdrop-filter: blur(4px);
+}
+
+:global(.tone-dark) .note i {
+  background: var(--color-accent-light);
+}
+
+/* ── "Plus more" line ─────────────────────────────── */
+.more {
+  margin-top: clamp(20px, 3vh, 32px);
+  font-size: var(--fs-body);
+  color: var(--fg-soft);
+}
+
+.moreLink {
+  color: var(--fg);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--hairline-strong);
+  transition: text-decoration-color var(--transition);
+}
+
+.moreLink:hover {
+  text-decoration-color: var(--color-accent);
 }
 
 /* ── Responsive ───────────────────────────────────── */
-@media (max-width: 900px) {
-  .grid {
+@media (max-width: 1000px) {
+  .head {
     grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .lede {
+    justify-self: start;
   }
 }
 
-@media (max-width: 768px) {
-  .section {
-    padding: var(--space-16) 0;
+@media (max-width: 880px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 
-  .header {
-    margin-bottom: var(--space-12);
+  .card {
+    min-height: 0;
+  }
+
+  .cardEyebrow {
+    margin-bottom: 28px;
   }
 }

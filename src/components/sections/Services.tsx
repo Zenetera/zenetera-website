@@ -1,109 +1,77 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
-import {
-  WebsiteIllustration,
-  AutomationIllustration,
-  ChatbotIllustration,
-  GoogleIllustration,
-} from "@/components/illustrations/ServiceIllustrations";
+import Arrow from "@/components/ui/Arrow";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Reveal from "@/motion/Reveal";
 import styles from "./Services.module.css";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
+interface Service {
+  category: string;
+  title: string;
+  description: string;
+  href: string;
+}
 
-const stagger = {
-  visible: { transition: { staggerChildren: 0.15 } },
-};
-
-const services = [
+const services: Service[] = [
   {
     category: "Websites",
     title: "Website development that converts",
-    description:
-      "Landing pages and business websites designed to turn visitors into paying customers.",
-    illustration: <WebsiteIllustration />,
+    description: "Landing pages and business websites designed to turn visitors into paying customers.",
     href: "/services#web-development",
   },
   {
     category: "Automation",
     title: "Booking automation & reminders",
-    description:
-      "Automated appointment reminders and booking systems that reduce no-shows by 40%.",
-    illustration: <AutomationIllustration />,
+    description: "Automated appointment reminders and booking systems that reduce no-shows by 40%.",
     href: "/services#booking",
   },
   {
     category: "Chatbots",
     title: "AI chatbots & messaging",
-    description:
-      "Chatbots for websites, WhatsApp, and Instagram that capture leads automatically 24/7.",
-    illustration: <ChatbotIllustration />,
+    description: "Chatbots for websites, WhatsApp, and Instagram that capture leads automatically 24/7.",
     href: "/services#chatbots",
   },
   {
     category: "Google",
     title: "Google business optimisation",
-    description:
-      "Dominate local search results and Google Maps so customers find you first.",
-    illustration: <GoogleIllustration />,
+    description: "Dominate local search results and Google Maps so customers find you first.",
     href: "/services#seo",
   },
 ];
 
 export default function Services() {
   return (
-    <section className={styles.section} id="services">
-      <div className={styles.container}>
-        <motion.div
-          className={styles.header}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className={styles.label}>Services</span>
-          <h2 className={styles.heading}>Everything you need to grow</h2>
-          <p className={styles.subtitle}>
-            From first impression to repeat customer, we build the systems that
-            make it happen.
-          </p>
-        </motion.div>
+    <section className={`pad ${styles.section}`} id="services">
+      <div className="wide">
+        <Reveal>
+          <Eyebrow index="02">Services</Eyebrow>
+        </Reveal>
 
-        <motion.div
-          className={styles.grid}
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-        >
-          {services.map((service) => (
-            <motion.div
-              key={service.title}
-              className={styles.card}
-              variants={fadeIn}
-            >
-              <Link href={service.href} className={styles.cardInner}>
-                <div className={styles.cardIllustration}>
-                  {service.illustration}
-                </div>
-                <div className={styles.cardBody}>
-                  <span className={styles.cardCategory}>
-                    {service.category}
-                  </span>
-                  <h3 className={styles.cardTitle}>{service.title}</h3>
-                  <p className={styles.cardDescription}>
-                    {service.description}
-                  </p>
-                </div>
+        <div className={styles.head}>
+          <Reveal as="h2" className={styles.heading}>
+            Everything you need to grow
+          </Reveal>
+          <Reveal as="p" delay={1} className={styles.lede}>
+            From first impression to repeat customer, we build the systems that make it happen.
+          </Reveal>
+        </div>
+
+        <div className={styles.rows}>
+          {services.map((service, i) => (
+            <Reveal key={service.title} className={styles.row}>
+              <Link href={service.href} className={styles.rowLink}>
+                <span className={styles.num}>0{i + 1}</span>
+                <span className={styles.text}>
+                  <span className={styles.category}>{service.category}</span>
+                  <h3 className={styles.title}>{service.title}</h3>
+                </span>
+                <p className={styles.desc}>{service.description}</p>
+                <span className={styles.pip}>
+                  <Arrow size={18} />
+                </span>
               </Link>
-            </motion.div>
+            </Reveal>
           ))}
-
-        </motion.div>
+        </div>
       </div>
     </section>
   );
